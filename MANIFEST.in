@@ -1,0 +1,8 @@
+include LICENSE
+include README
+
+exclude tox.ini
+exclude .flake8
+exclude .travis.ylm
+recursive-exclude tests *
+recursive-exclude docs *
