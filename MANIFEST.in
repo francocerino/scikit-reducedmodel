@@ -1,8 +1,15 @@
 include LICENSE
 include README
+include *txt
+include *.ipynb
+recursive-include skreducedmodel *
 
 exclude tox.ini
 exclude .flake8
 exclude .travis.ylm
+recursive-exclude skreducedmodel *.py~
+
+recursive-exclude skreducedmodel/__pycache__ *
+recursive-exclude old_code *
 recursive-exclude tests *
 recursive-exclude docs *
