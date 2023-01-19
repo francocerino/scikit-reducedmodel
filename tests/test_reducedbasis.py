@@ -47,6 +47,39 @@ def test_normalize_set(ts_test,times):
         norms = integration.norm(ts_test_normalized[i,:])
         assert np.allclose(norms,1,1e-10)
 
+def test_transform():
+
+    b = 0.2
+    y0 = [np.pi / 2, 0.0]
+
+    parameters = np.linspace(1, 5, 101)
+    times = np.linspace(0, 50, 1001)
+
+    training = []
+    for λ in parameters:
+        sol = odeint(pend, y0, times, (b, λ))
+        training.append(sol[:, 0])
+
+    training_set = np.array(training)
+    physical_points = times
+    nmax = 10
+
+    model = ReducedBasis(index_seed_global_rb=0,
+                         greedy_tol=1e-16,
+                         lmax=0,
+                         nmax=nmax,
+                         normalize=True
+                        )
+
+    model.fit(training_set=training_set,
+              parameters=parameters,
+              physical_points=physical_points,
+             )
+
+    wave1 = model.tree.basis[0]
+    wave_transform = model.transform(wave1,parameters)
+
+    assert wave1.all() == wave_transform.all()
 
 
 def test_ReducedModelFit():
