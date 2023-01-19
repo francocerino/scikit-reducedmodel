@@ -39,13 +39,13 @@ def pend(y, t, b, λ):
 
     return dydt
 
-#def test_normalize_set(ts_test,times):
+def test_normalize_set(ts_test,times):
 
-#    ts_test_normalized = normalize_set(ts_test,times)
-#    integration = integrals.Integration(times, 'riemann')
-#    for i in range(10):
-#        norms = integration.norm(ts_test_normalized[i,:])
-#        assert np.allclose(norms,1,1e-10)
+    ts_test_normalized = normalize_set(ts_test,times)
+    integration = integrals.Integration(times, 'riemann')
+    for i in range(10):
+        norms = integration.norm(ts_test_normalized[i,:])
+        assert np.allclose(norms,1,1e-10)
 
 
 
