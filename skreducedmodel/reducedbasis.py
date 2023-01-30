@@ -269,7 +269,9 @@ class ReducedBasis:
             )
 
     def search_leaf(self, parameters, node):
-        """Seach the parameter in the tree.
+        """Search Leaf.
+
+        Seach the parameter in the tree.
 
         Parameters
         ----------
@@ -278,8 +280,8 @@ class ReducedBasis:
 
         Returns
         -------
-        node :
-
+        node : np.ndarray
+            Set of nodes where the parameters are located in the tree
         """
         # parameters: conjunto de parametros que se quiere buscar sus
         # respectivas bases reducidas.
@@ -329,13 +331,17 @@ class ReducedBasis:
 
         Parameters
         ----------
-        parameters: array of parameters from the domain of the problem
-        anchor1: first greedy parameter of the space to divide.
-        anchor2: second greedy parameter of the space to divide.
+        parameters : np.ndarray
+            array of parameter from the domain of problem
+        idx_anchor_0 : float, integer
+            first greedy parameter of the space to divide
+        idx_anchor_1 : float, integer
+            second greedy parameter of the space to divide
 
         Returns
         -------
-         indices de parametros que corresponden a cada subespacio
+        np.ndarray
+            indices of parameter that correspond to each subspace
         """
         anchor_0 = parameters[idx_anchor_0]
         anchor_1 = parameters[idx_anchor_1]
@@ -469,6 +475,7 @@ def select_child_node(parameter, node):
     parameter : np.ndarray
         parameter to evaluate by the sustitute model in a subspace
     node : np.ndarray
+        node where the parameter is located in the subspace
         ..
     """
     # [fc] refactorizar. que sea más simple
@@ -506,9 +513,13 @@ def select_child_node(parameter, node):
 def normalize_set(array, domain, rule="riemann"):
     """Normalize set.
 
+    Normalize a set of functions or arrays. The normalization is
+
     Parameter:
     ----------
-
+    array : np.ndarray
+    domain : np.ndarray
+    rule : integration rule used to calculate the norm (default="riemann")
     """
     integration = integrals.Integration(domain, rule)
     norms = integration.norm(array)
@@ -531,6 +542,8 @@ def error(h1, h2, domain, rule="riemann"):
     ----------
     h1 : np.ndarray
     h2 : np.ndarray
+    domain : np.ndarray
+    rule : integration rule used to compute the error (default="riemann")
     """
     integration = integrals.Integration(domain, rule)
     diff = h1 - h2
@@ -540,8 +553,7 @@ def error(h1, h2, domain, rule="riemann"):
 def visual_tree(tree):
     """Visual Tree.
 
-    Esto no se que hace
-
+    Generate a tree visualization
     """
     for pre, fill, node in RenderTree(tree):
         print("%s%s" % (pre, node.name))
