@@ -14,6 +14,7 @@ reduced models from training data set.
    :caption: Contents:
 
    modules
+   tutorials/index.rst
 
 Indices and tables
 ==================
