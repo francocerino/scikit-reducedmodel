@@ -28,14 +28,6 @@ skreducedmodel.reducedbasis module
    :undoc-members:
    :show-inheritance:
 
-skreducedmodel.validators module
---------------------------------
-
-.. automodule:: skreducedmodel.validators
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

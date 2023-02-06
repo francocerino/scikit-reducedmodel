@@ -3,6 +3,7 @@ import numpy as np
 from skreducedmodel.reducedbasis import ReducedBasis
 from skreducedmodel.reducedbasis import normalize_set
 from skreducedmodel import integrals
+from skreducedmodel.reducedbasis import select_child_node
 # from scipy.special import jv as BesselJ
 #
 #
@@ -235,3 +236,40 @@ def test_partition():
     assert model.tree.height == 1
     assert set(idxs_subspace2) & set(idxs_subspace1) == set()
     assert set(idxs_subspace2) | set(idxs_subspace1) == set(range(len(parameters)))
+
+#def test_select_child_node():
+#    seed = 12345
+#    rng = np.random.default_rng(seed)
+
+#    class Node:
+#        def __init__(self, name, idx_anchor_0, idx_anchor_1, train_parameters, children):
+#            self.name = name
+#            self.idx_anchor_0 = idx_anchor_0
+#            self.idx_anchor_1 = idx_anchor_1
+#            self.train_parameters = train_parameters
+#            self.children = children
+
+#    node1 = Node("1", 0, 1, np.array([[0,0],[1,0],[0,1]]), 
+#            [Node("10", 0, 2, np.array([[0,0],[0,1]]), []), 
+#            Node("11", 1, 2, np.array([[1,0],[0,1]]), [])])
+#    node2 = Node("2", 0, 2, np.array([[0,0],[0,1],[1,1]]), 
+#            [Node("20", 0, 1, np.array([[0,0],[1,1]]), []), 
+#            Node("21", 1, 2, np.array([[0,1],[1,1]]), [])])
+    
+    # Test 1: Distancia de parameter a anchor_0 es menor que a anchor_1
+#    parameter = np.array([0.2,0.8])
+#    expected_child = node1.children[0]
+#    result = select_child_node(parameter, node1)
+#    assert result == expected_child, f"Expected {expected_child}, but got {result}"
+
+    # Test 2: Distancia de parameter a anchor_0 es mayor que a anchor_1
+#    parameter = np.array([0.7,0.5])
+#    expected_child = node1.children[1]
+#    result = select_child_node(parameter, node1)
+    #assert result == expected_child, f"Expected {expected_child}, but got {result}"
+    
+    # Test 3: Distancia de parameter a anchor_0 es igual que a anchor_1
+    #parameter = np.array([0.5,0.5])
+    #expected_child = node2.children[0]
+    #result = select_child_node(parameter, node2)
+    #assert result == expected_child, f"Expected {expected_child}, but got {result}"
