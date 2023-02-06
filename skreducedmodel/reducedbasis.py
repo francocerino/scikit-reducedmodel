@@ -12,21 +12,33 @@ logger = logging.getLogger("arby.basis")
 
 
 class ReducedBasis:
-    """Reduced Basis.
+    """Class for building a reduced basis using the Reduced Basis (RB) greedy algorithm.
 
-    This class contain the methods and function to build
-    the reduced basis.
-
+    The reduced basis is built from the training data set with a user specified tolerance by
+    linear combinations of its elements. The reduced basis can be also constructed with a  domain decomposition
+    of the parameter space, building local basis in each subspace.
+    
     Parameters
     ----------
-    index_seed_global_rb = ...
-    lmax = ...
-    nmax = ...
-    greedy_tol = ...
-    normalize =
-    integration_rule =
-
-    """
+    index_seed_global_rb : int, optional
+        The seed for construct the reduced basis, by default 0.
+    lmax : int, optional
+        The maximum number domain partitions performed.
+    nmax : int, optional
+        The maximum number of basis functions to be used, by default np.inf.
+    greedy_tol : float, optional
+        The greedy tolerance, by default 1e-12.
+    normalize : bool, optional
+        Indicates if the training set should be normalized, by default False.
+    integration_rule : str, optional
+        The integration rule to be used, by default "riemann".
+        
+    Attributes
+    ----------
+    tree : Node
+        The tree data structure for the reduced basis.
+    """        
+    
 
     def __init__(
         self,
@@ -71,7 +83,7 @@ class ReducedBasis:
         This function implements the Reduced Basis (RB) greedy algorithm for
         building an orthonormalized reduced basis out from training data. The
         basis is built for reproducing the training functions with the user
-        specified tolerance [TiglioAndVillanueva2021]_ by linear combinations
+        specified tolerance by linear combinations
         of its elements.
 
         Parameters
@@ -82,14 +94,11 @@ class ReducedBasis:
            aca decir algo...
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
-
-        References
-        ----------
-        .. [TiglioAndVillanueva2021] Reduced Order and Surrogate Models for
-           Gravitational Waves. Tiglio, M. and Villanueva A. arXiv:2101.11608
-           (2021)
-
         """
+        _validate_parameters(parameters)
+        _validate_physical_points(physical_points)
+        _validate_training_set(training_set)
+
         assert self.nmax > 0 and self.lmax >= 0
 
         if self.__first_iteration is True:
@@ -271,7 +280,10 @@ class ReducedBasis:
     def search_leaf(self, parameters, node):
         """Search Leaf.
 
-        Seach the parameter in the tree.
+        This function finds the leaf node in a tree by recursively
+        evaluating each node using the select_child_node function.
+        If a node is a leaf, the node is returned, otherwise the
+        search continues on the selected child node.
 
         Parameters
         ----------
@@ -329,6 +341,12 @@ class ReducedBasis:
     def partition(self, parameters, idx_anchor_0, idx_anchor_1):
         """Partition the parameter space.
 
+        This code partitions a list of parameters into two subspaces
+        based on their distances to two anchors. The function calculates
+        the distances and returns two arrays of indices representing
+        the parameters in each subspace. For equal distances the function
+        make a random decision.
+
         Parameters
         ----------
         parameters : np.ndarray
@@ -342,6 +360,11 @@ class ReducedBasis:
         -------
         np.ndarray
             indices of parameter that correspond to each subspace
+        
+        References
+        ----------
+        [CerinoAndTiglio2023] An automated parameter domain decomposition approach for gravitational wave
+        surrogates using hp-greedy refinement. Cerino, F. and Tiglio M. arXiv:2212.08554 (2023)
         """
         anchor_0 = parameters[idx_anchor_0]
         anchor_1 = parameters[idx_anchor_1]
@@ -470,13 +493,18 @@ def _gs_one_element(h, basis, integration, max_iter=3):
 def select_child_node(parameter, node):
     """Select child node.
 
+    The function selects a child node from a binary tree structure,
+    given a parameter. The function calculates the distances
+    between the parameter and two anchors, stored in the node,
+    and returns the child node with the closest anchor. If the
+    distances are equal, a random choice is made.
+
     Parameter:
     ----------
     parameter : np.ndarray
         parameter to evaluate by the sustitute model in a subspace
     node : np.ndarray
         node where the parameter is located in the subspace
-        ..
     """
     # [fc] refactorizar. que sea más simple
     # node : se da la raiz del arbol binario para realizar la evaluación.
@@ -557,3 +585,39 @@ def visual_tree(tree):
     """
     for pre, fill, node in RenderTree(tree):
         print("%s%s" % (pre, node.name))
+
+
+def _validate_parameters(input_value):
+    """Validate parameters.
+
+    This function validate the parameters
+    """
+    if not isinstance(input_value, np.ndarray):
+        raise TypeError(
+            "The input parameters must be a numpy array."
+            "Got instead type {}".format(type(input_value))
+        )
+
+
+def _validate_training_set(input_value):
+    """Validate training set.
+
+    This function validate the parameters
+    """
+    if not isinstance(input_value, np.ndarray):
+        raise TypeError(
+            "The input training_set must be a numpy array."
+            "Got instead type {}".format(type(input_value))
+        )
+
+
+def _validate_physical_points(input_value):
+    """Validate physical points.
+
+    This function validate the parameters
+    """
+    if not isinstance(input_value, np.ndarray):
+        raise TypeError(
+            "The input physical_points must be a numpy array."
+            "Got instead type {}".format(type(input_value))
+        )
