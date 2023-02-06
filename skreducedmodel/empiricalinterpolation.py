@@ -1,9 +1,10 @@
 """Empirical Interpolation Methods."""
 
 
-import functools
+# import functools
 
 import numpy as np
+from skreducedmodel.reducedbasis import ReducedBasis
 
 # import logging
 # import attr
@@ -29,19 +30,34 @@ class EmpiricalInterpolation:
     """
 
     # Se inicializa con la clase base reducida
-    def __init__(self, reduced_basis):
+    def __init__(
+        self,
+        reduced_basis = None,
+        **kwargs,
+        ) -> None:
         """Initialize the class.
-
         This methods initialize the EmpiritalInterpolation class.
         """
-        self.base = reduced_basis
+        if reduced_basis is not None:
+            if kwargs != {}:
+                print("Warning: **kwargs != None and not " + \
+                "taken in account, because a reduced basis is given")
+            self.base = reduced_basis
+        elif reduced_basis is None:
+            self.base = ReducedBasis(**kwargs)
 
     # def fit(self):
     #    print(self.basis.indices)
 
-    @property
-    @functools.lru_cache(maxsize=None)
-    def fit(self):
+    # @functools.lru_cache(maxsize=None)
+    # [fc] para que lo de arriba?
+    # @property
+
+    def fit(self,
+        training_set = None,
+        parameters = None,
+        physical_points = None
+        ) -> None:
         """Implement EIM algorithm.
 
         The Empirical Interpolation Method (EIM)
@@ -53,40 +69,55 @@ class EmpiricalInterpolation:
         Returns: skreducemodel.eim
         Container for EIM data. Contains (``interpolant``, ``nodes``).
         """
-        nodes = []
-        v_matrix = None
-        first_node = np.argmax(np.abs(self.base.tree.basis[0]))
-        nodes.append(first_node)
-
-        nbasis = len(self.base.tree.indices)
-
-        # logger.debug(first_node)
-
-        for i in range(1, nbasis):
-            # print(i)
-            v_matrix = self._next_vandermonde(
-                self.base.tree.basis, nodes, v_matrix
+        if not "tree" in vars(self.base):
+            # build tree if it does not exist
+            self.base.fit(training_set,
+                parameters,
+                physical_points
             )
-            base_at_nodes = [self.base.tree.basis[i, t] for t in nodes]
-            invv_matrix = np.linalg.inv(v_matrix)
-            step_basis = self.base.tree.basis[:i]
-            basis_interpolant = base_at_nodes @ invv_matrix @ step_basis
-            residual = self.base.tree.basis[i] - basis_interpolant
-            new_node = np.argmax(abs(residual))
 
-            # logger.debug(new_node)
+        elif (training_set != None or
+              parameters != None or
+              physical_points != None
+             ):
+            raise ValueError(
+                "Reduced Basis is already trained. " + \
+                "'training_set' or 'parameters' or 'physical_points' not needed")
 
-            nodes.append(new_node)
 
-        v_matrix = np.array(
-            self._next_vandermonde(self.base.tree.basis, nodes, v_matrix)
-        )
-        invv_matrix = np.linalg.inv(v_matrix.T)
-        interpolant = self.base.tree.basis.T @ invv_matrix
+        for leaf in self.base.tree.leaves:
+            nodes = []
+            v_matrix = None
+            first_node = np.argmax(np.abs(leaf.basis[0]))
+            nodes.append(first_node)
 
-        self.interpolant = interpolant
-        self.nodes = nodes
-        # return EIM(interpolant=interpolant, nodes=nodes)
+            nbasis = len(leaf.indices)
+
+            # logger.debug(first_node)
+
+            for i in range(1, nbasis):
+                v_matrix = self._next_vandermonde(
+                    leaf.basis, nodes, v_matrix
+                )
+                base_at_nodes = [leaf.basis[i, t] for t in nodes]
+                invv_matrix = np.linalg.inv(v_matrix)
+                step_basis = leaf.basis[:i]
+                basis_interpolant = base_at_nodes @ invv_matrix @ step_basis
+                residual = leaf.basis[i] - basis_interpolant
+                new_node = np.argmax(abs(residual))
+
+                # logger.debug(new_node)
+
+                nodes.append(new_node)
+
+            v_matrix = np.array(
+                self._next_vandermonde(leaf.basis, nodes, v_matrix)
+            )
+            invv_matrix = np.linalg.inv(v_matrix.T)
+            interpolant = leaf.basis.T @ invv_matrix
+
+            leaf.interpolant = interpolant
+            leaf.nodes = nodes
 
     def _next_vandermonde(self, data, nodes, vandermonde=None):
         """Build the next Vandermonde matrix from the previous one."""
@@ -103,3 +134,30 @@ class EmpiricalInterpolation:
         vertical_vector.append(data[n, new_node])
         vandermonde.append(vertical_vector)
         return vandermonde
+
+    def transform(self, h, q):
+        """Interpolate a function h at EIM nodes.
+
+        This method uses the basis and associated EIM nodes
+        (see the ``arby.Basis.eim_`` method) for interpolation.
+
+        Parameters
+        ----------
+        h : np.ndarray
+            Function or set of functions to be interpolated.
+
+        Returns
+        -------
+        h_interpolated : np.ndarray
+            Interpolated function at EIM nodes.
+        """
+
+        # search leaf and use the basis associated
+        leaf = self.base.search_leaf(q, node=self.base.tree)
+        # print(f"node name: {leaf.name}. is root: {leaf.is_leaf}")
+        # print(np.sort(leaf.train_parameters[:,0])[0],np.sort(leaf.train_parameters[:,0])[-1])
+
+        h = h.T
+        h_at_nodes = h[leaf.nodes]
+        h_interpolated = leaf.interpolant @ h_at_nodes
+        return h_interpolated.T
