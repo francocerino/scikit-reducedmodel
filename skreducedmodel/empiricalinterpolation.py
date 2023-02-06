@@ -4,6 +4,7 @@
 # import functools
 
 import numpy as np
+
 from skreducedmodel.reducedbasis import ReducedBasis
 
 # import logging
@@ -17,6 +18,10 @@ from skreducedmodel.reducedbasis import ReducedBasis
 
 
 # logger = logging.getLogger("arby.basis")
+
+
+class InputDataError(ValueError):
+    pass
 
 
 class EmpiricalInterpolation:
@@ -40,9 +45,9 @@ class EmpiricalInterpolation:
         """
         if reduced_basis is not None:
             if kwargs != {}:
-                print(
-                    "Warning: **kwargs != None and not "
-                    + "taken in account, because a reduced basis is given"
+                raise InputDataError(
+                    "**kwargs != None and not taken in account, "
+                    + "because a reduced basis is given"
                 )
             self.base = reduced_basis
         elif reduced_basis is None:
@@ -69,18 +74,19 @@ class EmpiricalInterpolation:
         Returns: skreducemodel.eim
         Container for EIM data. Contains (``interpolant``, ``nodes``).
         """
-        if not "tree" in vars(self.base):
+        if "tree" not in vars(self.base):
             # build tree if it does not exist
             self.base.fit(training_set, parameters, physical_points)
 
-        elif (
-            training_set != None
-            or parameters != None
-            or physical_points != None
+        elif not (
+            training_set is None
+            and parameters is None
+            and physical_points is None
         ):
-            raise ValueError(
+            raise InputDataError(
                 "Reduced Basis is already trained. "
-                + "'training_set' or 'parameters' or 'physical_points' not needed"
+                + "'training_set' or 'parameters' or"
+                + "'physical_points' not needed"
             )
 
         for leaf in self.base.tree.leaves:

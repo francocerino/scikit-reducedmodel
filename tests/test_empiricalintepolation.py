@@ -4,6 +4,8 @@ from skreducedmodel.reducedbasis import ReducedBasis
 
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 
+from skreducedmodel.empiricalinterpolation import InputDataError
+
 import numpy as np
 
 import pytest
@@ -83,3 +85,96 @@ def test_interpolator(ts_train, parameters_train, times):
         assert leaf.is_leaf
         # test if interpolation is true
         np.testing.assert_allclose(interp_fun[leaf.nodes], sample[leaf.nodes], rtol=1e-5, atol=1e-8)
+
+def test_EmpiricalInterpolationit_error_extra_info():
+    with pytest.raises(InputDataError):
+
+        b = 0.2
+        y0 = [np.pi / 2, 0.0]
+
+        param = np.linspace(1, 5, 101)
+        times = np.linspace(0, 50, 1001)
+
+        training = []
+        for λ in param:
+            sol = odeint(pend, y0, times, (b, λ))
+            training.append(sol[:, 0])
+
+        training_set = np.array(training)
+        parameters = param
+        physical_points = times
+        nmax = 10
+
+        model = ReducedBasis(
+            index_seed_global_rb=0, greedy_tol=1e-10, lmax=0, normalize=False
+        )
+
+        model.fit(
+            training_set=training_set,
+            parameters=parameters,
+            physical_points=physical_points)
+
+        ti = EmpiricalInterpolation(reduced_basis=model)
+        ti.fit(training_set = training_set)
+
+
+def test_EmpiricalInterpolationit_error_extra_info_init():
+    with pytest.raises(InputDataError):
+
+        b = 0.2
+        y0 = [np.pi / 2, 0.0]
+
+        param = np.linspace(1, 5, 101)
+        times = np.linspace(0, 50, 1001)
+
+        training = []
+        for λ in param:
+            sol = odeint(pend, y0, times, (b, λ))
+            training.append(sol[:, 0])
+
+        training_set = np.array(training)
+        parameters = param
+        physical_points = times
+        nmax = 10
+
+        model = ReducedBasis(
+            index_seed_global_rb=0, greedy_tol=1e-10, lmax=0, normalize=False
+        )
+
+        model.fit(
+            training_set=training_set,
+            parameters=parameters,
+            physical_points=physical_points)
+
+        ti = EmpiricalInterpolation(reduced_basis=model,lmax=1)
+
+def test_EmpiricalInterpolationit_error_no_info():
+    # usa lineas de "elif reduced_basis is None:" y
+    # "if not "tree" in vars(self.base):".
+    # Comprueba que no hay errores al instanciacion,
+    # fit y transform de EIM en el caso particular.
+        b = 0.2
+        y0 = [np.pi / 2, 0.0]
+
+        param = np.linspace(1, 5, 101)
+        times = np.linspace(0, 50, 1001)
+
+        training = []
+        for λ in param:
+            sol = odeint(pend, y0, times, (b, λ))
+            training.append(sol[:, 0])
+
+        training_set = np.array(training)
+        parameters = param
+        physical_points = times
+
+        eim_model = EmpiricalInterpolation()
+
+        eim_model.fit(training_set=training_set,
+                  parameters=parameters,
+                  physical_points=physical_points
+                )
+        
+        eim_model.transform(training_set[0],parameters[0])
+
+        assert True
