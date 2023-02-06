@@ -2,7 +2,7 @@
 
 import logging
 
-from anytree import Node
+from anytree import Node, RenderTree
 
 import numpy as np
 
@@ -12,12 +12,13 @@ logger = logging.getLogger("arby.basis")
 
 
 class ReducedBasis:
-    """Class for building a reduced basis using the Reduced Basis (RB) greedy algorithm.
+    """Class for building a reduced basis (RB) using the RB greedy algorithm.
 
-    The reduced basis is built from the training data set with a user specified tolerance by
-    linear combinations of its elements. The reduced basis can be also constructed with a  domain decomposition
+    The reduced basis is built from the training data set with a user
+    specified tolerance by linear combinations of its elements. The
+    reduced basis can be also constructed with a  domain decomposition
     of the parameter space, building local basis in each subspace.
-    
+
     Parameters
     ----------
     index_seed_global_rb : int, optional
@@ -32,13 +33,12 @@ class ReducedBasis:
         Indicates if the training set should be normalized, by default False.
     integration_rule : str, optional
         The integration rule to be used, by default "riemann".
-        
+
     Attributes
     ----------
     tree : Node
         The tree data structure for the reduced basis.
-    """        
-    
+    """
 
     def __init__(
         self,
@@ -48,7 +48,7 @@ class ReducedBasis:
         greedy_tol=1e-12,
         normalize=False,
         integration_rule="riemann",
-        ) -> None:
+    ) -> None:
         """Init Method.
 
         Initialize the class.
@@ -360,11 +360,12 @@ class ReducedBasis:
         -------
         np.ndarray
             indices of parameter that correspond to each subspace
-        
+
         References
         ----------
-        [CerinoAndTiglio2023] An automated parameter domain decomposition approach for gravitational wave
-        surrogates using hp-greedy refinement. Cerino, F. and Tiglio M. arXiv:2212.08554 (2023)
+        [CerinoAndTiglio2023] An automated parameter domain decomposition
+        approach for gravitational wave surrogates using hp-greedy
+        refinement. Cerino, F. and Tiglio M. arXiv:2212.08554 (2023)
         """
         anchor_0 = parameters[idx_anchor_0]
         anchor_1 = parameters[idx_anchor_1]
@@ -576,8 +577,10 @@ def error(h1, h2, domain, rule="riemann"):
     integration = integrals.Integration(domain, rule)
     diff = h1 - h2
     return integration.dot(diff, diff)
-#<<<<<<< HEAD
-#=======
+
+
+# <<<<<<< HEAD
+# =======
 
 
 def visual_tree(tree):
@@ -623,4 +626,6 @@ def _validate_physical_points(input_value):
             "The input physical_points must be a numpy array."
             "Got instead type {}".format(type(input_value))
         )
-#>>>>>>> editando-pagina
+
+
+# >>>>>>> editando-pagina

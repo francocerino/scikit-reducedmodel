@@ -32,16 +32,18 @@ class EmpiricalInterpolation:
     # Se inicializa con la clase base reducida
     def __init__(
         self,
-        reduced_basis = None,
+        reduced_basis=None,
         **kwargs,
-        ) -> None:
+    ) -> None:
         """Initialize the class.
         This methods initialize the EmpiritalInterpolation class.
         """
         if reduced_basis is not None:
             if kwargs != {}:
-                print("Warning: **kwargs != None and not " + \
-                "taken in account, because a reduced basis is given")
+                print(
+                    "Warning: **kwargs != None and not "
+                    + "taken in account, because a reduced basis is given"
+                )
             self.base = reduced_basis
         elif reduced_basis is None:
             self.base = ReducedBasis(**kwargs)
@@ -53,11 +55,9 @@ class EmpiricalInterpolation:
     # [fc] para que lo de arriba?
     # @property
 
-    def fit(self,
-        training_set = None,
-        parameters = None,
-        physical_points = None
-        ) -> None:
+    def fit(
+        self, training_set=None, parameters=None, physical_points=None
+    ) -> None:
         """Implement EIM algorithm.
 
         The Empirical Interpolation Method (EIM)
@@ -71,19 +71,17 @@ class EmpiricalInterpolation:
         """
         if not "tree" in vars(self.base):
             # build tree if it does not exist
-            self.base.fit(training_set,
-                parameters,
-                physical_points
-            )
+            self.base.fit(training_set, parameters, physical_points)
 
-        elif (training_set != None or
-              parameters != None or
-              physical_points != None
-             ):
+        elif (
+            training_set != None
+            or parameters != None
+            or physical_points != None
+        ):
             raise ValueError(
-                "Reduced Basis is already trained. " + \
-                "'training_set' or 'parameters' or 'physical_points' not needed")
-
+                "Reduced Basis is already trained. "
+                + "'training_set' or 'parameters' or 'physical_points' not needed"
+            )
 
         for leaf in self.base.tree.leaves:
             nodes = []
@@ -96,9 +94,7 @@ class EmpiricalInterpolation:
             # logger.debug(first_node)
 
             for i in range(1, nbasis):
-                v_matrix = self._next_vandermonde(
-                    leaf.basis, nodes, v_matrix
-                )
+                v_matrix = self._next_vandermonde(leaf.basis, nodes, v_matrix)
                 base_at_nodes = [leaf.basis[i, t] for t in nodes]
                 invv_matrix = np.linalg.inv(v_matrix)
                 step_basis = leaf.basis[:i]
