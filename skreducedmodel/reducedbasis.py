@@ -2,7 +2,7 @@
 
 import logging
 
-from anytree import Node, RenderTree
+from anytree import Node
 
 import numpy as np
 
@@ -36,7 +36,7 @@ class ReducedBasis:
         greedy_tol=1e-12,
         normalize=False,
         integration_rule="riemann",
-    ) -> None:
+        ) -> None:
         """Init Method.
 
         Initialize the class.
@@ -548,12 +548,3 @@ def error(h1, h2, domain, rule="riemann"):
     integration = integrals.Integration(domain, rule)
     diff = h1 - h2
     return integration.dot(diff, diff)
-
-
-def visual_tree(tree):
-    """Visual Tree.
-
-    Generate a tree visualization
-    """
-    for pre, fill, node in RenderTree(tree):
-        print("%s%s" % (pre, node.name))

@@ -1,11 +1,12 @@
-from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
-
 from scipy.integrate import odeint
 
 from skreducedmodel.reducedbasis import ReducedBasis
 
+from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
+
 import numpy as np
 
+import pytest
 
 def pend(y, t, b, λ):
     θ, ω = y
@@ -39,14 +40,46 @@ def test_EmpiricalInterpolationit():
     model.fit(
         training_set=training_set,
         parameters=parameters,
-        physical_points=physical_points,
-    )
+        physical_points=physical_points)
 
     ti = EmpiricalInterpolation(reduced_basis=model)
-    ti.fit
+    ti.fit()
 
-    print(ti.nodes)
+    assert ti.base.tree.nodes[0] == 0
+    assert ti.base.tree.nodes[5] == 167
+    assert ti.base.tree.nodes[19] == 816
 
-    assert ti.nodes[0] == 0
-    assert ti.nodes[5] == 167
-    assert ti.nodes[19] == 816
+
+def test_interpolator(ts_train, parameters_train, times):
+    """Test that interpolate method works as true projectors."""
+
+    random = np.random.default_rng(seed=42)
+    basis = ReducedBasis(index_seed_global_rb=0,
+                         greedy_tol=1e-12,
+                         lmax=0,
+                         nmax=np.inf,
+                         normalize=True
+                    )
+    
+    basis.fit(training_set=ts_train,
+              parameters=parameters_train,
+              physical_points=times)
+
+    eim = EmpiricalInterpolation(basis)
+    eim.fit()
+
+    for _ in range(10):
+        # compute a random index to test Proj_operator^2 = Proj_operator
+        
+        random_index = random.integers(len(ts_train))
+        sample = ts_train[random_index] # random.choice(ts_train)
+        parameter_sample = parameters_train[random_index]
+
+        interp_fun = eim.transform(sample, parameter_sample)
+        re_interp_fun = eim.transform(interp_fun, parameter_sample)
+        np.testing.assert_allclose(interp_fun, re_interp_fun, rtol=1e-5, atol=1e-8)
+
+        leaf = eim.base.search_leaf(parameter_sample, node=eim.base.tree)
+        assert leaf.is_leaf
+        # test if interpolation is true
+        np.testing.assert_allclose(interp_fun[leaf.nodes], sample[leaf.nodes], rtol=1e-5, atol=1e-8)
