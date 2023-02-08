@@ -2,12 +2,19 @@
 
 from skreducedmodel.surrogate import Surrogate
 
+from arby import ReducedOrderModel as ROM
+
 import arby
+
+import numpy as np
+
+from skreducedmodel.reducedbasis import error
+
 
 def test_rom_rb_interface(rom_parameters):
     """Test API consistency."""
 
-    bessel = arby.ReducedOrderModel(
+    bessel = ROM(
         rom_parameters["training_set"],
         rom_parameters["physical_points"],
         rom_parameters["parameter_points"],
@@ -41,3 +48,39 @@ def test_rom_rb_interface(rom_parameters):
     assert (rom_errors == errors).all()
     assert (rom_projection_matrix == projection_matrix).all()
     assert rom_greedy_indices == greedy_indices
+
+def test_predictions_dataset_real_dataset(ts_train,
+                                          ts_test,
+                                          parameters_train,
+                                          parameters_test,
+                                          times):
+    
+    ts_train_real = np.real(ts_train)
+    ts_test_real = np.real(ts_test)
+
+    #orden de datos para splines tener en cuenta
+    f_model = ROM(training_set=ts_train_real[np.argsort(parameters_train[:,0])],
+                physical_points=times,
+                parameter_points=np.sort(parameters_train[:,0])
+                )
+
+    errors_f_model = []
+    for h, q in zip(ts_test_real, parameters_test):
+        h_rom = f_model.surrogate(q[0])
+        errors_f_model.append(error(h, h_rom, times))
+
+    rom = Surrogate(lmax = 0,
+                    nmax = np.inf,
+                    normalize = False
+                )
+
+    rom.fit(training_set = ts_train_real,
+                parameters = parameters_train[:,0],
+                physical_points = times
+        )
+    errors_rom = []
+    for h, q in zip(ts_test_real, parameters_test):
+        h_rom = rom.predict(q[0])
+        errors_rom.append(error(h, h_rom, times))
+
+    assert errors_f_model == errors_rom
