@@ -242,6 +242,8 @@ class ReducedBasis:
         node.errors = greedy_errors
         node.projection_matrix = proj_matrix.T
         node.integration = integration
+        node.training_set = training_set
+        node.train_parameters = parameters
 
         if (
             deep < self.lmax
