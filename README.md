@@ -4,7 +4,7 @@
 
 [![https://github.com/leliel12/diseno_sci_sfw](https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00)](https://github.com/leliel12/diseno_sci_sfw)
 [![Python version](https://img.shields.io/badge/python-3.10%20-blue)](https://img.shields.io/badge/python-3.10%20-blue)
-[![Scikit-ReducedModel CI](https://github.com/francocerino/scikit-reducedmodel/actions/workflows/CI.yml/badge.svg)](https://github.com/francocerino/francocerino/actions/workflows/CI.yml)
+[![Scikit-ReducedModel CI](https://github.com/francocerino/scikit-reducedmodel/actions/workflows/ci.yml/badge.svg)](https://github.com/francocerino/francocerino/actions/workflows/ci.yml)
 
 
 
