@@ -1,5 +1,9 @@
 # import numpy as np
 
+from skreducedmodel.reducedbasis import ReducedBasis, error
+
+from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
+
 from skreducedmodel.surrogate import Surrogate
 
 from arby import ReducedOrderModel as ROM
@@ -7,8 +11,6 @@ from arby import ReducedOrderModel as ROM
 import arby
 
 import numpy as np
-
-from skreducedmodel.reducedbasis import error
 
 from scipy.special import jv as BesselJ
 
@@ -20,7 +22,7 @@ def test_rom_rb_interface(rom_parameters):
         rom_parameters["training_set"],
         rom_parameters["physical_points"],
         rom_parameters["parameter_points"],
-        greedy_tol=1e-14
+        greedy_tol=1e-14,
     )
     basis = bessel.basis_.data
     errors = bessel.greedy_errors_
@@ -34,14 +36,18 @@ def test_rom_rb_interface(rom_parameters):
     assert len(greedy_indices) == 10
     assert eim == bessel.basis_.eim_
 
-    rom = Surrogate(greedy_tol=1e-14, lmax = 0)
+    rb = ReducedBasis(greedy_tol=1e-14)
+    rb.fit(
+        training_set=rom_parameters["training_set"],
+        parameters=rom_parameters["parameter_points"],
+        physical_points=rom_parameters["physical_points"],
+    )
+    eim = EmpiricalInterpolation(reduced_basis=rb)
+    eim.fit()
+    rom = Surrogate(eim=eim)
+    rom.fit()
 
-    rom.fit(training_set = rom_parameters["training_set"],
-            parameters = rom_parameters["parameter_points"],
-            physical_points = rom_parameters["physical_points"],
-        )      
-
-    leaf = rom.base.tree
+    leaf = rom.eim.reduced_basis.tree
     rom_errors = leaf.errors
     rom_projection_matrix = leaf.projection_matrix
     rom_greedy_indices = leaf.indices
@@ -51,35 +57,37 @@ def test_rom_rb_interface(rom_parameters):
     assert (rom_projection_matrix == projection_matrix).all()
     assert rom_greedy_indices == greedy_indices
 
-def test_predictions_dataset_real_dataset(ts_train,
-                                          ts_test,
-                                          parameters_train,
-                                          parameters_test,
-                                          times):
-    
+
+def test_predictions_dataset_real_dataset(
+    ts_train, ts_test, parameters_train, parameters_test, times
+):
+
     ts_train_real = np.real(ts_train)
     ts_test_real = np.real(ts_test)
 
-    #orden de datos para splines tener en cuenta
-    f_model = ROM(training_set=ts_train_real[np.argsort(parameters_train[:,0])],
-                physical_points=times,
-                parameter_points=np.sort(parameters_train[:,0])
-                )
+    # orden de datos para splines tener en cuenta
+    f_model = ROM(
+        training_set=ts_train_real[np.argsort(parameters_train[:, 0])],
+        physical_points=times,
+        parameter_points=np.sort(parameters_train[:, 0]),
+    )
 
     errors_f_model = []
     for h, q in zip(ts_test_real, parameters_test):
         h_rom = f_model.surrogate(q[0])
         errors_f_model.append(error(h, h_rom, times))
 
-    rom = Surrogate(lmax = 0,
-                    nmax = np.inf,
-                    normalize = False
-                )
+    rb = ReducedBasis()
+    rb.fit(
+        training_set=ts_train_real,
+        parameters=parameters_train[:, 0],
+        physical_points=times,
+    )
+    eim = EmpiricalInterpolation(reduced_basis=rb)
+    eim.fit()
+    rom = Surrogate(eim=eim)
+    rom.fit()
 
-    rom.fit(training_set = ts_train_real,
-                parameters = parameters_train[:,0],
-                physical_points = times
-        )
     errors_rom = []
     for h, q in zip(ts_test_real, parameters_test):
         h_rom = rom.predict(q[0])
@@ -100,12 +108,12 @@ def test_surrogate_accuracy():
         [BesselJ(nn, physical_points) for nn in parameter_points]
     )
 
-    # build reduced basis
-    rom = Surrogate(greedy_tol=1e-15)
-    rom.fit(training_set = training,
-            physical_points = physical_points,
-            parameters = parameter_points
-            )
+    rb = ReducedBasis(greedy_tol=1e-15)
+    rb.fit(training, parameter_points, physical_points)
+    eim = EmpiricalInterpolation(reduced_basis=rb)
+    eim.fit()
+    rom = Surrogate(eim=eim)
+    rom.fit()
 
     bessel_test = [BesselJ(nn, physical_points) for nn in nu_validation]
     bessel_surrogate = [rom.predict(nn) for nn in nu_validation]

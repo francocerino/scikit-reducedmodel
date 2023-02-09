@@ -35,35 +35,16 @@ class EmpiricalInterpolation:
     """
 
     # Se inicializa con la clase base reducida
-    def __init__(
-        self,
-        reduced_basis=None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, reduced_basis=None) -> None:
         """Initialize the class.
         This methods initialize the EmpiritalInterpolation class.
         """
-        if reduced_basis is not None:
-            if kwargs != {}:
-                raise InputDataError(
-                    "**kwargs != { } and not taken in account "
-                    + "because a reduced basis is given"
-                )
-            self.base = reduced_basis
-        elif reduced_basis is None:
-            self.base = ReducedBasis(**kwargs)
+        self.reduced_basis = (
+            ReduceBasis() if reduced_basis is None else reduced_basis
+        )
         self._trained = False
 
-    # def fit(self):
-    #    print(self.basis.indices)
-
-    # @functools.lru_cache(maxsize=None)
-    # [fc] para que lo de arriba?
-    # @property
-
-    def fit(
-        self, training_set=None, parameters=None, physical_points=None
-    ) -> None:
+    def fit(self) -> None:
         """Implement EIM algorithm.
 
         The Empirical Interpolation Method (EIM)
@@ -75,30 +56,14 @@ class EmpiricalInterpolation:
         Returns: skreducemodel.eim
         Container for EIM data. Contains (``interpolant``, ``nodes``).
         """
-        if "tree" not in vars(self.base):
-            # build tree if it does not exist
-            self.base.fit(training_set, parameters, physical_points)
 
-        elif not (
-            training_set is None
-            and parameters is None
-            and physical_points is None
-        ):
-            raise InputDataError(
-                "Reduced Basis is already trained. "
-                + "'training_set' or 'parameters' or"
-                + "'physical_points' not needed"
-            )
-
-        for leaf in self.base.tree.leaves:
+        for leaf in self.reduced_basis.tree.leaves:
             nodes = []
             v_matrix = None
             first_node = np.argmax(np.abs(leaf.basis[0]))
             nodes.append(first_node)
 
             nbasis = len(leaf.indices)
-
-            # logger.debug(first_node)
 
             for i in range(1, nbasis):
                 v_matrix = self._next_vandermonde(leaf.basis, nodes, v_matrix)
@@ -108,8 +73,6 @@ class EmpiricalInterpolation:
                 basis_interpolant = base_at_nodes @ invv_matrix @ step_basis
                 residual = leaf.basis[i] - basis_interpolant
                 new_node = np.argmax(abs(residual))
-
-                # logger.debug(new_node)
 
                 nodes.append(new_node)
 
@@ -162,7 +125,7 @@ class EmpiricalInterpolation:
         """
 
         # search leaf and use the basis associated
-        leaf = self.base.search_leaf(q, node=self.base.tree)
+        leaf = self.reduced_basis.search_leaf(q, node=self.reduced_basis.tree)
         # print(f"node name: {leaf.name}. is root: {leaf.is_leaf}")
         # print(np.sort(leaf.train_parameters[:,0])[0],np.sort(leaf.train_parameters[:,0])[-1])
 

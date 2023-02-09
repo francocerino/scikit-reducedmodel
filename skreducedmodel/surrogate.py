@@ -1,6 +1,4 @@
-
-from .reducedbasis import ReducedBasis
-from .empiricalinterpolation import EmpiricalInterpolation, InputDataError
+from .empiricalinterpolation import EmpiricalInterpolation
 
 # import gwtools.gwtools as gwtools
 
@@ -14,31 +12,10 @@ class Surrogate:
         self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
 
-    def fit(
-        self, training_set=None, parameters=None, physical_points=None
-    ) -> None:
-        # if not (
-        #        training_set is None
-        #        and parameters is None
-        #        and physical_points is None
-        #    ):
-        #       raise InputDataError(
-        #            "Reduced Basis is already trained. "
-        #            + "'training_set' or 'parameters' or"
-        #            + "'physical_points' not needed"
-        #        )
-
-        # build reduced basis or eim if there are not created
-        if "tree" not in vars(self.base):
-            # build tree if it does not exist
-            self.base.fit(training_set, parameters, physical_points)
-            self.eim.fit()
-        elif "eim" not in vars(self):
-            self.eim = EmpiricalInterpolation(reduced_basis=self.base)
-            self.eim.fit()
+    def fit(self) -> None:
 
         # train surrogate stage
-        for leaf in self.base.tree.leaves:
+        for leaf in self.eim.reduced_basis.tree.leaves:
             if np.any(np.iscomplex(leaf.training_set)):
                 leaf.complex_dataset_bool = True
                 amp_training_set, phase_training_set = _amp_phase_set(
@@ -56,7 +33,7 @@ class Surrogate:
             else:
                 leaf.complex_dataset_bool = False
                 leaf._cached_spline_model = self._spline_model(
-                    leaf, leaf.training_set, parameters
+                    leaf, leaf.training_set, leaf.train_parameters
                 )
 
     def _spline_model(self, leaf, training_set, parameters):
@@ -92,7 +69,9 @@ class Surrogate:
 
         """
 
-        leaf = self.base.search_leaf(parameter, node=self.base.tree)
+        leaf = self.eim.reduced_basis.search_leaf(
+            parameter, node=self.eim.reduced_basis.tree
+        )
 
         if not leaf.complex_dataset_bool:
             h_surrogate = self._prediction_real_dataset(

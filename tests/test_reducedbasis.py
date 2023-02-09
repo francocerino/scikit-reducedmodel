@@ -4,6 +4,7 @@ from skreducedmodel.reducedbasis import ReducedBasis
 from skreducedmodel.reducedbasis import normalize_set
 from skreducedmodel import integrals
 from skreducedmodel.reducedbasis import select_child_node
+
 # from scipy.special import jv as BesselJ
 #
 #
@@ -40,13 +41,15 @@ def pend(y, t, b, λ):
 
     return dydt
 
-def test_normalize_set(ts_test,times):
 
-    ts_test_normalized = normalize_set(ts_test,times)
-    integration = integrals.Integration(times, 'riemann')
+def test_normalize_set(ts_test, times):
+
+    ts_test_normalized = normalize_set(ts_test, times)
+    integration = integrals.Integration(times, "riemann")
     for i in range(10):
-        norms = integration.norm(ts_test_normalized[i,:])
-        assert np.allclose(norms,1,1e-10)
+        norms = integration.norm(ts_test_normalized[i, :])
+        assert np.allclose(norms, 1, 1e-10)
+
 
 def test_transform():
 
@@ -65,20 +68,22 @@ def test_transform():
     physical_points = times
     nmax = 10
 
-    model = ReducedBasis(index_seed_global_rb=0,
-                         greedy_tol=1e-16,
-                         lmax=0,
-                         nmax=nmax,
-                         normalize=True
-                        )
+    model = ReducedBasis(
+        index_seed_global_rb=0,
+        greedy_tol=1e-16,
+        lmax=0,
+        nmax=nmax,
+        normalize=True,
+    )
 
-    model.fit(training_set=training_set,
-              parameters=parameters,
-              physical_points=physical_points,
-             )
+    model.fit(
+        training_set=training_set,
+        parameters=parameters,
+        physical_points=physical_points,
+    )
 
     wave1 = model.tree.basis[0]
-    wave_transform = model.transform(wave1,parameters)
+    wave_transform = model.transform(wave1, parameters)
 
     assert wave1.all() == wave_transform.all()
 
@@ -100,17 +105,19 @@ def test_ReducedModelFit():
     physical_points = times
     nmax = 10
 
-    model = ReducedBasis(index_seed_global_rb=0,
-                         greedy_tol=1e-16,
-                         lmax=0,
-                         nmax=nmax,
-                         normalize=True
-                        )
+    model = ReducedBasis(
+        index_seed_global_rb=0,
+        greedy_tol=1e-16,
+        lmax=0,
+        nmax=nmax,
+        normalize=True,
+    )
 
-    model.fit(training_set=training_set,
-              parameters=parameters,
-              physical_points=physical_points,
-             )
+    model.fit(
+        training_set=training_set,
+        parameters=parameters,
+        physical_points=physical_points,
+    )
 
     print(model.tree.errors[nmax - 1], model.tree.errors[0])
 
@@ -166,7 +173,6 @@ def test_rmfit_parameters():
     assert len(model1.tree.indices) < len(model2.tree.indices)
 
 
-
 """
 def test_rom_rb_interface(rom_parameters):
     ""Test API consistency.""
@@ -197,12 +203,13 @@ def test_rom_rb_interface(rom_parameters):
     # assert eim == bessel.basis_.eim
 """
 
+
 def test_partition():
     # test para para los índices de los parametros de entrenamiento de
     # los subespacios resultantes.
     # la interseccion tiene que dar vacia.
     # la union da los índices parametros de entrenamiento del espacio original
-    
+
     b = 0.2
     y0 = [np.pi / 2, 0.0]
 
@@ -218,26 +225,31 @@ def test_partition():
     physical_points = times
     nmax = 10
     lmax = 1
-    
-    model = ReducedBasis(index_seed_global_rb=0,
-                         greedy_tol=1e-16,
-                         lmax=lmax,
-                         nmax=nmax,
-                         normalize=True
-                        )
 
-    model.fit(training_set=training_set,
-              parameters=parameters,
-              physical_points=physical_points,
-             )
+    model = ReducedBasis(
+        index_seed_global_rb=0,
+        greedy_tol=1e-16,
+        lmax=lmax,
+        nmax=nmax,
+        normalize=True,
+    )
+
+    model.fit(
+        training_set=training_set,
+        parameters=parameters,
+        physical_points=physical_points,
+    )
 
     idxs_subspace1 = model.tree.idxs_subspace0
     idxs_subspace2 = model.tree.idxs_subspace1
     assert model.tree.height == 1
     assert set(idxs_subspace2) & set(idxs_subspace1) == set()
-    assert set(idxs_subspace2) | set(idxs_subspace1) == set(range(len(parameters)))
+    assert set(idxs_subspace2) | set(idxs_subspace1) == set(
+        range(len(parameters))
+    )
 
-#def test_select_child_node():
+
+# def test_select_child_node():
 #    seed = 12345
 #    rng = np.random.default_rng(seed)
 
@@ -249,27 +261,27 @@ def test_partition():
 #            self.train_parameters = train_parameters
 #            self.children = children
 
-#    node1 = Node("1", 0, 1, np.array([[0,0],[1,0],[0,1]]), 
-#            [Node("10", 0, 2, np.array([[0,0],[0,1]]), []), 
+#    node1 = Node("1", 0, 1, np.array([[0,0],[1,0],[0,1]]),
+#            [Node("10", 0, 2, np.array([[0,0],[0,1]]), []),
 #            Node("11", 1, 2, np.array([[1,0],[0,1]]), [])])
-#    node2 = Node("2", 0, 2, np.array([[0,0],[0,1],[1,1]]), 
-#            [Node("20", 0, 1, np.array([[0,0],[1,1]]), []), 
+#    node2 = Node("2", 0, 2, np.array([[0,0],[0,1],[1,1]]),
+#            [Node("20", 0, 1, np.array([[0,0],[1,1]]), []),
 #            Node("21", 1, 2, np.array([[0,1],[1,1]]), [])])
-    
-    # Test 1: Distancia de parameter a anchor_0 es menor que a anchor_1
+
+# Test 1: Distancia de parameter a anchor_0 es menor que a anchor_1
 #    parameter = np.array([0.2,0.8])
 #    expected_child = node1.children[0]
 #    result = select_child_node(parameter, node1)
 #    assert result == expected_child, f"Expected {expected_child}, but got {result}"
 
-    # Test 2: Distancia de parameter a anchor_0 es mayor que a anchor_1
+# Test 2: Distancia de parameter a anchor_0 es mayor que a anchor_1
 #    parameter = np.array([0.7,0.5])
 #    expected_child = node1.children[1]
 #    result = select_child_node(parameter, node1)
-    #assert result == expected_child, f"Expected {expected_child}, but got {result}"
-    
-    # Test 3: Distancia de parameter a anchor_0 es igual que a anchor_1
-    #parameter = np.array([0.5,0.5])
-    #expected_child = node2.children[0]
-    #result = select_child_node(parameter, node2)
-    #assert result == expected_child, f"Expected {expected_child}, but got {result}"
+# assert result == expected_child, f"Expected {expected_child}, but got {result}"
+
+# Test 3: Distancia de parameter a anchor_0 es igual que a anchor_1
+# parameter = np.array([0.5,0.5])
+# expected_child = node2.children[0]
+# result = select_child_node(parameter, node2)
+# assert result == expected_child, f"Expected {expected_child}, but got {result}"

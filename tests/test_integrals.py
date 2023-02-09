@@ -32,11 +32,19 @@ def test_euclidean():
     """Test discrete rule."""
     discrete_points = np.arange(1, 10)
     random = np.random.default_rng(seed=1)
-    dummy_array_1 = np.array([random.random() + 1j * random.random() for _ in range(9)])
-    dummy_array_2 = np.array([random.random() + 1j * random.random() for _ in range(9)])
+    dummy_array_1 = np.array(
+        [random.random() + 1j * random.random() for _ in range(9)]
+    )
+    dummy_array_2 = np.array(
+        [random.random() + 1j * random.random() for _ in range(9)]
+    )
     discrete_quadrature = integrals.Integration(
         interval=discrete_points, rule="euclidean"
     )
     exact_dot_product = np.dot(dummy_array_1.conjugate(), dummy_array_2)
-    computed_dot_product = discrete_quadrature.dot(dummy_array_1, dummy_array_2)
-    np.testing.assert_allclose(exact_dot_product, computed_dot_product, atol=1e-6)
+    computed_dot_product = discrete_quadrature.dot(
+        dummy_array_1, dummy_array_2
+    )
+    np.testing.assert_allclose(
+        exact_dot_product, computed_dot_product, atol=1e-6
+    )
