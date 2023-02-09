@@ -46,7 +46,7 @@ class EmpiricalInterpolation:
         if reduced_basis is not None:
             if kwargs != {}:
                 raise InputDataError(
-                    "**kwargs != None and not taken in account, "
+                    "**kwargs != { } and not taken in account "
                     + "because a reduced basis is given"
                 )
             self.base = reduced_basis
