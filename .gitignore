@@ -25,6 +25,8 @@ htmlcov/
 
 *egg-info/
 *.py~
-*.py~
 
 .git
+
+*swp
+*~
