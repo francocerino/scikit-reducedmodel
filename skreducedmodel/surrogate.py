@@ -1,8 +1,6 @@
-from skreducedmodel.reducedbasis import ReducedBasis
 
-from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
-
-from skreducedmodel.empiricalinterpolation import InputDataError
+from .reducedbasis import ReducedBasis
+from .empiricalinterpolation import EmpiricalInterpolation, InputDataError
 
 # import gwtools.gwtools as gwtools
 
@@ -10,53 +8,16 @@ import numpy as np
 
 from scipy.interpolate import splev, splrep
 
+
 class Surrogate:
-    def __init__(self,
-                 poly_deg=3,
-                 reduced_basis=None,
-                 eim=None,
-                 **kwargs
-                ) -> None:
-
+    def __init__(self, poly_deg=3, eim=None) -> None:
         self.poly_deg = poly_deg
-        if reduced_basis == None and eim == None:
-            self.base = ReducedBasis(**kwargs)
-            self.eim = EmpiricalInterpolation(reduced_basis=self.base)
+        self.eim = EmpiricalInterpolation() if eim is None else eim
 
-        elif eim is not None:
-            if reduced_basis is not None:
-                raise InputDataError(
-                    "reduced_basis != None and not taken in account "
-                    + "because a eim instance is given. Only "
-                    + "one must be given."
-                )
-            elif  kwargs != {}:
-                raise InputDataError(
-                    "kwargs != { } and not taken in account "
-                    + "because a eim instance is given. Only "
-                    + "one must be given."
-                )
-            self.eim = eim
-
-        elif reduced_basis is not None:
-            if kwargs != {}:
-                raise InputDataError(
-                    "**kwargs != { } and not taken in account "
-                    + "because a reduced basis is given"
-                )
-            self.base = reduced_basis
-        
-        elif reduced_basis is None:
-            self.base = ReducedBasis(**kwargs)
-
-
-    def fit(self,
-            training_set=None,
-            parameters=None,
-            physical_points=None
-            ) -> None:
-
-        #if not (
+    def fit(
+        self, training_set=None, parameters=None, physical_points=None
+    ) -> None:
+        # if not (
         #        training_set is None
         #        and parameters is None
         #        and physical_points is None
@@ -80,27 +41,25 @@ class Surrogate:
         for leaf in self.base.tree.leaves:
             if np.any(np.iscomplex(leaf.training_set)):
                 leaf.complex_dataset_bool = True
-                amp_training_set, phase_training_set = _amp_phase_set(leaf.training_set)
-                
-                leaf._cached_spline_model_amp = self._spline_model(leaf,
-                                                                   amp_training_set,
-                                                                   leaf.train_parameters
-                                                                   )
+                amp_training_set, phase_training_set = _amp_phase_set(
+                    leaf.training_set
+                )
 
-                leaf._cached_spline_modela_phase = self._spline_model(leaf,
-                                                                      phase_training_set,
-                                                                      leaf.train_parameters
-                                                                      )
+                leaf._cached_spline_model_amp = self._spline_model(
+                    leaf, amp_training_set, leaf.train_parameters
+                )
+
+                leaf._cached_spline_modela_phase = self._spline_model(
+                    leaf, phase_training_set, leaf.train_parameters
+                )
 
             else:
                 leaf.complex_dataset_bool = False
-                leaf._cached_spline_model = self._spline_model(leaf,
-                                                                leaf.training_set,
-                                                                parameters
-                                                                )
+                leaf._cached_spline_model = self._spline_model(
+                    leaf, leaf.training_set, parameters
+                )
 
-    def _spline_model(self,leaf,training_set,parameters):
-
+    def _spline_model(self, leaf, training_set, parameters):
         training_compressed = training_set[:, leaf.nodes]
         h_in_nodes_splined = [
             splrep(
@@ -110,7 +69,7 @@ class Surrogate:
             )
             for i, _ in enumerate(leaf.basis)
         ]
-        return h_in_nodes_splined 
+        return h_in_nodes_splined
 
     def predict(self, parameter):
         """Evaluate the surrogate model at parameter/s.
@@ -136,13 +95,19 @@ class Surrogate:
         leaf = self.base.search_leaf(parameter, node=self.base.tree)
 
         if not leaf.complex_dataset_bool:
-
-            h_surrogate = self._prediction_real_dataset(leaf,parameter, leaf._cached_spline_model)
+            h_surrogate = self._prediction_real_dataset(
+                leaf, parameter, leaf._cached_spline_model
+            )
 
         else:
-
-            h_surrogate = self._prediction_real_dataset(leaf,parameter, leaf._cached_spline_model_amp)*\
-                np.exp(1j*self.prediction_real_dataset(leaf,parameter, leaf._cached_spline_model_phase))
+            h_surrogate = self._prediction_real_dataset(
+                leaf, parameter, leaf._cached_spline_model_amp
+            ) * np.exp(
+                1j
+                * self.prediction_real_dataset(
+                    leaf, parameter, leaf._cached_spline_model_phase
+                )
+            )
 
         return h_surrogate
 
@@ -156,9 +121,11 @@ class Surrogate:
 
         return h_surrogate
 
-    def _amp_phase_set(self,training_set):
+    def _amp_phase_set(self, training_set):
         amp_training_set = np.zeros(training_set.shape)
         phase_training_set = np.zeros(training_set.shape)
         for idx, f in enumerate(training_set):
-            amp_training_set[idx], phase_training_set[idx] = gwtools.amp_phase(f)
+            amp_training_set[idx], phase_training_set[idx] = gwtools.amp_phase(
+                f
+            )
         return amp_training_set, phase_training_set

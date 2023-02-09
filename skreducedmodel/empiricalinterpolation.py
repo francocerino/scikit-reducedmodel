@@ -52,6 +52,7 @@ class EmpiricalInterpolation:
             self.base = reduced_basis
         elif reduced_basis is None:
             self.base = ReducedBasis(**kwargs)
+        self._trained = False
 
     # def fit(self):
     #    print(self.basis.indices)
@@ -120,6 +121,12 @@ class EmpiricalInterpolation:
 
             leaf.interpolant = interpolant
             leaf.nodes = nodes
+
+        self._trained = True
+
+    @property
+    def is_trained(self):
+        return self._trained
 
     def _next_vandermonde(self, data, nodes, vandermonde=None):
         """Build the next Vandermonde matrix from the previous one."""

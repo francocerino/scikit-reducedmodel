@@ -7,7 +7,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "scikitreducedmodel"
+name = "Scikit-ReducedModel"
 version = "0.0.1"
 authors = [{name = "Franco Cerino", email = "--@gmail.com"}]
 license = {text = "The MIT License"}
@@ -26,7 +26,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 urls = {Homepage = "https://github.com/francocerino/scikit-reducedmodel"}
-dependencies = ["numpy", "pandas", "scipy", "attrs", "matplotlib", "arby", "anytree"]
+dependencies = ["numpy", "scipy", "anytree", "gwtools"]
 
 [tool.setuptools]
 packages = ["skreducedmodel"]###, "skreducedmodel.*"]
