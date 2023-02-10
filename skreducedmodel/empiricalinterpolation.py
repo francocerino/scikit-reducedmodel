@@ -40,7 +40,7 @@ class EmpiricalInterpolation:
         This methods initialize the EmpiritalInterpolation class.
         """
         self.reduced_basis = (
-            ReduceBasis() if reduced_basis is None else reduced_basis
+            ReducedBasis() if reduced_basis is None else reduced_basis
         )
         self._trained = False
 

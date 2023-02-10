@@ -1,8 +1,8 @@
+import numpy as np
+
 from .empiricalinterpolation import EmpiricalInterpolation
 
-# import gwtools.gwtools as gwtools
-
-import numpy as np
+import gwtools.gwtools as gwtools
 
 from scipy.interpolate import splev, splrep
 
