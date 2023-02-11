@@ -17,13 +17,6 @@ from skreducedmodel.reducedbasis import ReducedBasis
 # =================================
 
 
-# logger = logging.getLogger("arby.basis")
-
-
-class InputDataError(ValueError):
-    pass
-
-
 class EmpiricalInterpolation:
     """Empirital interpolation functions and methods.
 

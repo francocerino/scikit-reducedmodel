@@ -578,7 +578,7 @@ def error(h1, h2, domain, rule="riemann"):
     """
     integration = integrals.Integration(domain, rule)
     diff = h1 - h2
-    return integration.dot(diff, diff)
+    return np.real(integration.dot(diff, diff))
 
 
 # <<<<<<< HEAD

@@ -1,4 +1,4 @@
-# import numpy as np
+import numpy as np
 
 from skreducedmodel.reducedbasis import ReducedBasis, error
 
@@ -7,10 +7,6 @@ from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 from skreducedmodel.surrogate import Surrogate
 
 from arby import ReducedOrderModel as ROM
-
-import arby
-
-import numpy as np
 
 from scipy.special import jv as BesselJ
 

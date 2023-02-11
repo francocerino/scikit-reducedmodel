@@ -1,10 +1,8 @@
 import numpy as np
 
-from .empiricalinterpolation import EmpiricalInterpolation
-
-import gwtools.gwtools as gwtools
-
 from scipy.interpolate import splev, splrep
+
+from .empiricalinterpolation import EmpiricalInterpolation
 
 
 class Surrogate:
@@ -103,12 +101,3 @@ class Surrogate:
         )
 
         return h_surrogate_at_nodes
-
-    def _amp_phase_set(self, training_set):
-        amp_training_set = np.zeros(training_set.shape)
-        phase_training_set = np.zeros(training_set.shape)
-        for idx, f in enumerate(training_set):
-            amp_training_set[idx], phase_training_set[idx] = gwtools.amp_phase(
-                f
-            )
-        return amp_training_set, phase_training_set
