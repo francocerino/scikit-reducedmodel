@@ -6,7 +6,7 @@ from .empiricalinterpolation import EmpiricalInterpolation
 
 
 class Surrogate:
-    def __init__(self, poly_deg=3, eim=None) -> None:
+    def __init__(self, eim=None, poly_deg=3) -> None:
         self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
 
@@ -16,9 +16,6 @@ class Surrogate:
         for leaf in self.eim.reduced_basis.tree.leaves:
             if np.any(np.iscomplex(leaf.training_set)):
                 leaf.complex_dataset_bool = True
-                # amp_training_set, phase_training_set = self._amp_phase_set(
-                #    leaf.training_set
-                # )
 
                 amp_training_set = np.abs(leaf.training_set)
 

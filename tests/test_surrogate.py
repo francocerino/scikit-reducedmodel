@@ -117,3 +117,46 @@ def test_surrogate_accuracy():
     np.testing.assert_allclose(
         bessel_test, bessel_surrogate, rtol=1e-5, atol=1e-5
     )
+
+
+def test_consistency_complex_and_real_cases(
+    ts_train, ts_test, parameters_train, parameters_test, times
+):
+    ts_train_abs = np.abs(ts_train)
+    ts_test_abs = np.abs(ts_test)
+
+    rb = ReducedBasis()
+    rb.fit(
+        training_set=ts_train_abs,
+        parameters=parameters_train[:, 0],
+        physical_points=times,
+    )
+    eim = EmpiricalInterpolation(rb)
+    eim.fit()
+    surrogate = Surrogate(eim)
+    surrogate.fit()
+
+    rb_complex = ReducedBasis()
+    rb_complex.fit(
+        training_set=ts_train_abs + 1j * 1e-16,
+        parameters=parameters_train[:, 0],
+        physical_points=times,
+    )
+    eim_complex = EmpiricalInterpolation(rb_complex)
+    eim_complex.fit()
+    surrogate_complex = Surrogate(eim_complex)
+    surrogate_complex.fit()
+
+    assert surrogate_complex.eim.reduced_basis.tree.complex_dataset_bool
+    assert not surrogate.eim.reduced_basis.tree.complex_dataset_bool
+
+    errors_rom = []
+    errors_rom_complex = []
+    for h, q in zip(ts_test_abs, parameters_test):
+        h_rom = surrogate.predict(q[0])
+        h_rom_complex = surrogate_complex.predict(q[0])
+
+        errors_rom.append(error(h, h_rom, times))
+        errors_rom_complex.append(error(h, h_rom_complex, times))
+
+    assert np.allclose(errors_rom_complex, errors_rom)

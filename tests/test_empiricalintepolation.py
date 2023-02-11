@@ -6,8 +6,6 @@ from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 
 import numpy as np
 
-import pytest
-
 
 def pend(y, t, b, λ):
     θ, ω = y
