@@ -18,15 +18,19 @@ class Surrogate:
         for leaf in self.eim.reduced_basis.tree.leaves:
             if np.any(np.iscomplex(leaf.training_set)):
                 leaf.complex_dataset_bool = True
-                amp_training_set, phase_training_set = _amp_phase_set(
-                    leaf.training_set
-                )
+                # amp_training_set, phase_training_set = self._amp_phase_set(
+                #    leaf.training_set
+                # )
+
+                amp_training_set = np.abs(leaf.training_set)
+
+                phase_training_set = np.angle(leaf.training_set)
 
                 leaf._cached_spline_model_amp = self._spline_model(
                     leaf, amp_training_set, leaf.train_parameters
                 )
 
-                leaf._cached_spline_modela_phase = self._spline_model(
+                leaf._cached_spline_model_phase = self._spline_model(
                     leaf, phase_training_set, leaf.train_parameters
                 )
 
@@ -74,31 +78,31 @@ class Surrogate:
         )
 
         if not leaf.complex_dataset_bool:
-            h_surrogate = self._prediction_real_dataset(
-                leaf, parameter, leaf._cached_spline_model
+            h_surrogate_at_nodes = self._prediction_real_dataset(
+                parameter, leaf._cached_spline_model
             )
 
         else:
-            h_surrogate = self._prediction_real_dataset(
-                leaf, parameter, leaf._cached_spline_model_amp
+            h_surrogate_at_nodes = self._prediction_real_dataset(
+                parameter, leaf._cached_spline_model_amp
             ) * np.exp(
                 1j
-                * self.prediction_real_dataset(
-                    leaf, parameter, leaf._cached_spline_model_phase
+                * self._prediction_real_dataset(
+                    parameter, leaf._cached_spline_model_phase
                 )
             )
 
+        h_surrogate = leaf.interpolant @ h_surrogate_at_nodes
+
         return h_surrogate
 
-    def _prediction_real_dataset(self, leaf, parameter, model):
-        fitted_model = model
+    def _prediction_real_dataset(self, parameter, fitted_model):
 
-        h_surr_at_nodes = np.array(
+        h_surrogate_at_nodes = np.array(
             [splev(parameter, spline) for spline in fitted_model]
         )
-        h_surrogate = leaf.interpolant @ h_surr_at_nodes
 
-        return h_surrogate
+        return h_surrogate_at_nodes
 
     def _amp_phase_set(self, training_set):
         amp_training_set = np.zeros(training_set.shape)
