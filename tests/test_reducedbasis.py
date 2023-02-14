@@ -2,7 +2,11 @@ from scipy.integrate import odeint
 import numpy as np
 import pytest
 import skreducedmodel.reducedbasis as rb
-from skreducedmodel.reducedbasis import ReducedBasis,  normalize_set, select_child_node
+from skreducedmodel.reducedbasis import (
+    ReducedBasis,
+    normalize_set,
+    select_child_node,
+)
 from skreducedmodel import integrals
 
 # from scipy.special import jv as BesselJ
@@ -258,11 +262,14 @@ def test_validators():
     with pytest.raises(TypeError):
         rb._validate_training_set([1, 2, 3])
 
+
 def test_search_leaf(ts_train, parameters_train, times):
-    rb = ReducedBasis(lmax=10,greedy_tol=1e-15,nmax=5)
-    rb.fit(training_set=ts_train,
+    rb = ReducedBasis(lmax=10, greedy_tol=1e-15, nmax=5)
+    rb.fit(
+        training_set=ts_train,
         parameters=parameters_train,
-        physical_points=times)
+        physical_points=times,
+    )
     tree = rb.tree
 
     for leaf in tree.leaves:
@@ -272,17 +279,19 @@ def test_search_leaf(ts_train, parameters_train, times):
 
 
 def test_select_child_node(ts_train, parameters_train, times):
-    rb = ReducedBasis(lmax=1,greedy_tol=1e-15,nmax=20)
-    rb.fit(training_set = ts_train,
-        parameters = parameters_train,
-        physical_points = times
-        )
+    rb = ReducedBasis(lmax=1, greedy_tol=1e-15, nmax=20)
+    rb.fit(
+        training_set=ts_train,
+        parameters=parameters_train,
+        physical_points=times,
+    )
     tree = rb.tree
 
     for leaf in tree.leaves:
         for parameter in leaf.train_parameters:
             leaf_select_child_node = select_child_node(parameter, tree)
             assert leaf_select_child_node == leaf
+
 
 # def test_select_child_node():
 #    seed = 12345
