@@ -3,3 +3,4 @@ sphinx_rtd_theme
 nbsphinx
 sphinx-copybutton
 ipython
+Jinja2<3.1
