@@ -7,4 +7,5 @@ problems solved with Scikit-ReducedModels.
 .. toctree::
    :maxdepth: 2
 
+   Pendulo.ipynb
    runs.ipynb
