@@ -15,12 +15,14 @@ def mksurrogate(instance=None, **kwargs):
     """
     Trains and returns a Surrogate model.
 
-    Factory function for the classes ReducedBasis, EmpiricalInterpolation and Surrogate.
+    Factory function for the classes ReducedBasis, EmpiricalInterpolation
+    and Surrogate.
 
     In one way, only hyperparameters and training data can be given.
 
-    In another way, can be given an instance of ReducedBasis or EmpiricalInterpolation
-    and hyperparameters of the subsequent classes.
+    In another way, can be given an instance of ReducedBasis or
+    EmpiricalInterpolation and hyperparameters of the subsequent classes.
+    If the instance will be trained if that did not happen before.
 
     Parameters
     ----------

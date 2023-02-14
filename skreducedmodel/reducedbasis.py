@@ -147,7 +147,7 @@ class ReducedBasis:
 
         norms = integration.norm(training_set)
 
-        if self.normalize:  # [fc] ver esta parte. capaz hay que reorganizar.
+        if self.normalize:
             # normalize training set
             training_set = np.array(
                 [
@@ -161,7 +161,6 @@ class ReducedBasis:
             seed = training_set[next_index]
 
             aux = 0
-            # [fc] hacer tests de este loop
             while aux < ntrain - 1:
                 if np.allclose(np.abs(seed), 0):
                     if next_index < ntrain - 1:
@@ -500,6 +499,10 @@ def _gs_one_element(h, basis, integration, max_iter=3):
     return e / new_norm, new_norm
 
 
+seed1 = 12345
+rng1 = np.random.default_rng(seed1)
+
+
 def select_child_node(parameter, node):
     """Select child node.
 
@@ -516,12 +519,9 @@ def select_child_node(parameter, node):
     node : np.ndarray
         node where the parameter is located in the subspace
     """
-    # [fc] refactorizar. que sea más simple
     # node : se da la raiz del arbol binario para realizar la evaluación.
     # parameter : parámetro a evaluar por el modelo sustituto de un subespacio.
 
-    seed = 12345
-    rng = np.random.default_rng(seed)
     anchor_0 = node.train_parameters[node.idx_anchor_0]
     anchor_1 = node.train_parameters[node.idx_anchor_1]
 
@@ -541,7 +541,7 @@ def select_child_node(parameter, node):
             child = node.children[1]
     else:
         # para distancias iguales se realiza una elección aleatoria.
-        if rng.integers(2):
+        if rng1.integers(2):
             child = node.children[0]
         else:
             child = node.children[1]
