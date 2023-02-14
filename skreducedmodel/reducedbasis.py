@@ -2,7 +2,7 @@
 
 import logging
 
-from anytree import Node, RenderTree
+from anytree import Node
 
 import numpy as np
 
@@ -62,6 +62,7 @@ class ReducedBasis:
         self.normalize = normalize
         self.integration_rule = integration_rule
         self.__first_iteration = True
+        self._trained = False
 
     # comenzamos la implementacion de reduced_basis
     # la idea es acoplar esto al método fit de ReducedModel.
@@ -278,6 +279,12 @@ class ReducedBasis:
                 deep=deep + 1,
                 index_seed=0,
             )
+
+        self._trained = True
+
+    @property
+    def is_trained(self):
+        return self._trained
 
     def search_leaf(self, parameters, node):
         """Search Leaf.
@@ -581,19 +588,6 @@ def error(h1, h2, domain, rule="riemann"):
     return np.real(integration.dot(diff, diff))
 
 
-# <<<<<<< HEAD
-# =======
-
-
-def visual_tree(tree):
-    """Visual Tree.
-
-    Generate a tree visualization
-    """
-    for pre, fill, node in RenderTree(tree):
-        print("%s%s" % (pre, node.name))
-
-
 def _validate_parameters(input_value):
     """Validate parameters.
 
@@ -628,6 +622,3 @@ def _validate_physical_points(input_value):
             "The input physical_points must be a numpy array."
             "Got instead type {}".format(type(input_value))
         )
-
-
-# >>>>>>> editando-pagina

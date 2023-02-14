@@ -1,5 +1,7 @@
 from scipy.integrate import odeint
 import numpy as np
+import pytest
+import skreducedmodel.reducedbasis as rb
 from skreducedmodel.reducedbasis import ReducedBasis
 from skreducedmodel.reducedbasis import normalize_set
 from skreducedmodel import integrals
@@ -247,6 +249,16 @@ def test_partition():
     assert set(idxs_subspace2) | set(idxs_subspace1) == set(
         range(len(parameters))
     )
+
+
+def test_validators():
+    # assert validate_parameters(np.array([1, 2, 3]))
+    with pytest.raises(TypeError):
+        rb._validate_parameters([1, 2, 3])
+    with pytest.raises(TypeError):
+        rb._validate_physical_points([1, 2, 3])
+    with pytest.raises(TypeError):
+        rb._validate_training_set([1, 2, 3])
 
 
 # def test_select_child_node():

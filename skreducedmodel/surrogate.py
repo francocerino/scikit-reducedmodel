@@ -9,6 +9,7 @@ class Surrogate:
     def __init__(self, eim=None, poly_deg=3) -> None:
         self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
+        self._trained = False
 
     def fit(self) -> None:
 
@@ -34,6 +35,12 @@ class Surrogate:
                 leaf._cached_spline_model = self._spline_model(
                     leaf, leaf.training_set, leaf.train_parameters
                 )
+
+        self._trained = True
+
+    @property
+    def is_trained(self):
+        return self._trained
 
     def _spline_model(self, leaf, training_set, parameters):
         training_compressed = training_set[:, leaf.nodes]
