@@ -1,15 +1,9 @@
 """Empirical Interpolation Methods."""
 
 
-# import functools
-
 import numpy as np
 
 from skreducedmodel.reducedbasis import ReducedBasis
-
-# import logging
-# import attr
-# from . import integrals
 
 
 # =================================
@@ -30,6 +24,7 @@ class EmpiricalInterpolation:
     # Se inicializa con la clase base reducida
     def __init__(self, reduced_basis=None) -> None:
         """Initialize the class.
+
         This methods initialize the EmpiritalInterpolation class.
         """
         self.reduced_basis = (
@@ -49,7 +44,6 @@ class EmpiricalInterpolation:
         Returns: skreducemodel.eim
         Container for EIM data. Contains (``interpolant``, ``nodes``).
         """
-
         for leaf in self.reduced_basis.tree.leaves:
             nodes = []
             v_matrix = None
@@ -82,6 +76,7 @@ class EmpiricalInterpolation:
 
     @property
     def is_trained(self):
+        """Return True only if the instance is trained."""
         return self._trained
 
     def _next_vandermonde(self, data, nodes, vandermonde=None):
@@ -116,11 +111,8 @@ class EmpiricalInterpolation:
         h_interpolated : np.ndarray
             Interpolated function at EIM nodes.
         """
-
-        # search leaf and use the basis associated
+        # search leaf and use the associated basis.
         leaf = self.reduced_basis.search_leaf(q, node=self.reduced_basis.tree)
-        # print(f"node name: {leaf.name}. is root: {leaf.is_leaf}")
-        # print(np.sort(leaf.train_parameters[:,0])[0],np.sort(leaf.train_parameters[:,0])[-1])
 
         h = h.T
         h_at_nodes = h[leaf.nodes]

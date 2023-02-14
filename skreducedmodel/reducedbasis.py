@@ -283,6 +283,7 @@ class ReducedBasis:
 
     @property
     def is_trained(self):
+        """Return True only if the instance is trained."""
         return self._trained
 
     def search_leaf(self, parameters, node):
@@ -334,8 +335,6 @@ class ReducedBasis:
         """
         # search leaf
         leaf = self.search_leaf(parameters, node=self.tree)
-        # print(f"node name: {leaf.name}. is root: {leaf.is_leaf}")
-        # print(np.sort(leaf.train_parameters[:,0])[0],np.sort(leaf.train_parameters[:,0])[-1])
 
         # use basis associated to leaf
         s = slice(*s)
