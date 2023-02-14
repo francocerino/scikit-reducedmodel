@@ -1,3 +1,5 @@
+"""mksurrogate function implementation."""
+
 import inspect
 
 from .reducedbasis import ReducedBasis
@@ -8,6 +10,8 @@ from .surrogate import Surrogate
 
 
 class InputError(ValueError):
+    """Class used to give input errors of the function mksurrogate."""
+
     pass
 
 
@@ -34,7 +38,6 @@ def mksurrogate(instance=None, **kwargs):
     A trained Surrogate model.
 
     """
-
     # obtain given input data to train ReducedBasis, if needed.
     rb_fit_parameters = ["training_set", "parameters", "physical_points"]
     kwargs_rb_fit = {k: v for k, v in kwargs.items() if k in rb_fit_parameters}

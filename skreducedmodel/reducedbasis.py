@@ -52,7 +52,6 @@ class ReducedBasis:
         """Init Method.
 
         Initialize the class.
-
         """
         # the default seed is the first of the array "parameters"
         self.index_seed_global_rb = index_seed_global_rb
@@ -283,7 +282,7 @@ class ReducedBasis:
 
     @property
     def is_trained(self):
-        """Return True only if the instance is trained."""
+        """Return True only if the instance is trained, False otherwise."""
         return self._trained
 
     def search_leaf(self, parameters, node):

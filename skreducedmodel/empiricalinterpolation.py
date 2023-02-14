@@ -76,7 +76,7 @@ class EmpiricalInterpolation:
 
     @property
     def is_trained(self):
-        """Return True only if the instance is trained."""
+        """Return True only if the instance is trained, False otherwise."""
         return self._trained
 
     def _next_vandermonde(self, data, nodes, vandermonde=None):

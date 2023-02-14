@@ -1,3 +1,5 @@
+"""Surrogate module."""
+
 import numpy as np
 
 from scipy.interpolate import splev, splrep
@@ -6,13 +8,52 @@ from .empiricalinterpolation import EmpiricalInterpolation
 
 
 class Surrogate:
+    """Build reduced order models.
+
+    This class comprises a set of tools to build and handle reduced bases,
+    empirical interpolants and predictive models from pre-computed training
+    set of functions. The underlying or ground truth model describing the
+    training set is a real function g(v,x) parameterized by a *training*
+    parameter v. The *physical* variable x belongs to a domain for which an
+    inner product can defined. The surrogate model is built bringing together
+    the Reduced Basis (RB) greedy algorithm and the Empirical Interpolation
+    Method (EIM) to work in synergy towards a predictive model for the ground
+    truth model.
+
+    Parameters
+    ----------
+    eim : EmpiricalInterpolation, optional
+        .
+    poly_deg: int, optional
+        Degree <= 5 of polynomials used for splines. Default = 3.
+
+    Attributes
+    ----------
+    _trained : bool
+        .
+    poly_deg : int
+        .
+    eim :
+        .
+    """
+
     def __init__(self, eim=None, poly_deg=3) -> None:
+        """Initialize the class.
+
+        This methods initialize the Surrogate class.
+        """
         self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
         self._trained = False
 
     def fit(self) -> None:
+        """Build a surrogate model from EmpiricalInterpolation class.
 
+        Parameters
+        ----------
+        parameter1 : numpy.ndarray
+           Explanation
+        """
         # train surrogate stage
         for leaf in self.eim.reduced_basis.tree.leaves:
             if np.any(np.iscomplex(leaf.training_set)):
@@ -40,6 +81,7 @@ class Surrogate:
 
     @property
     def is_trained(self):
+        """Return True only if the instance is trained, False otherwise."""
         return self._trained
 
     def _spline_model(self, leaf, training_set, parameters):
@@ -74,7 +116,6 @@ class Surrogate:
             The evaluated surrogate function for the given parameters.
 
         """
-
         leaf = self.eim.reduced_basis.search_leaf(
             parameter, node=self.eim.reduced_basis.tree
         )
