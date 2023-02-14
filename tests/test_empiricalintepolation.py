@@ -1,10 +1,9 @@
+import numpy as np
+
 from scipy.integrate import odeint
 
-from skreducedmodel.reducedbasis import ReducedBasis
-
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
-
-import numpy as np
+from skreducedmodel.reducedbasis import ReducedBasis
 
 
 def pend(y, t, b, λ):
@@ -14,7 +13,7 @@ def pend(y, t, b, λ):
     return dydt
 
 
-def test_EmpiricalInterpolationit():
+def test_empiricalinterpolation_it():
 
     b = 0.2
     y0 = [np.pi / 2, 0.0]
@@ -94,7 +93,7 @@ def test_interpolator(ts_train, parameters_train, times):
         )
 
 
-def test_EmpiricalInterpolationit_error_no_info():
+def test_empiricalinterpolationit_error_no_info():
     # usa lineas de "elif reduced_basis is None:" y
     # "if not "tree" in vars(self.reduced_basis):".
     # Comprueba que no hay errores al instanciacion,

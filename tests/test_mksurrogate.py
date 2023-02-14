@@ -1,11 +1,7 @@
-import numpy as np
-
 import pytest
 
 from skreducedmodel.reducedbasis import ReducedBasis
-
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
-
 from skreducedmodel.mksurrogate import mksurrogate, InputError
 
 

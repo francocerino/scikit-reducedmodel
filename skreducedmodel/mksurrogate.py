@@ -2,10 +2,8 @@
 
 import inspect
 
-from .reducedbasis import ReducedBasis
-
 from .empiricalinterpolation import EmpiricalInterpolation
-
+from .reducedbasis import ReducedBasis
 from .surrogate import Surrogate
 
 
@@ -46,8 +44,8 @@ def mksurrogate(instance=None, **kwargs):
         raise InputError(
             (
                 "A reduced basis or eim instance is not needed as input "
-                + "if training data is given. In case hyperparameters want to be "
-                + "specified, they must be kwargs."
+                + "if training data is given. In case hyperparameters "
+                + "want to be specified, they must be kwargs."
             )
         )
 
@@ -67,8 +65,8 @@ def mksurrogate(instance=None, **kwargs):
     # raise an error if there are variables in kwargs that will not be used.
     for key in kwargs.keys():
         if (
-            not key
-            in list(parameters_rb)[1:]  # do not include self.
+            key
+            not in list(parameters_rb)[1:]  # do not include self.
             + rb_fit_parameters
             + list(parameters_eim)[2:]  # do not include self and rb.
             + list(parameters_rom)[2:]  # do not include self and eim.
@@ -88,7 +86,8 @@ def mksurrogate(instance=None, **kwargs):
     elif isinstance(instance, ReducedBasis):
         if kwargs_rb != {}:
             raise InputError(
-                "If an instance of ReducedBasis is given, must not be given hyperparameters of it."
+                "If an instance of ReducedBasis is given, must not "
+                + "be given hyperparameters of it."
             )
 
         # build it using the EmpiricalInterpolation instance given.
@@ -104,7 +103,8 @@ def mksurrogate(instance=None, **kwargs):
         eim = instance
     else:
         raise InputError(
-            "if 'instance' is given, must be an instance of EmpiricalInterpolation or ReducedBasis"
+            "if 'instance' is given, must be an instance of "
+            + "EmpiricalInterpolation or ReducedBasis."
         )
 
     surrogate = Surrogate(eim, **kwargs_rom)

@@ -140,7 +140,6 @@ class Surrogate:
         return h_surrogate
 
     def _prediction_real_dataset(self, parameter, fitted_model):
-
         h_surrogate_at_nodes = np.array(
             [splev(parameter, spline) for spline in fitted_model]
         )

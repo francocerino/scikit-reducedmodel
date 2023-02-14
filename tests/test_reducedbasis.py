@@ -298,7 +298,8 @@ def test_select_child_node(ts_train, parameters_train, times):
 #    rng = np.random.default_rng(seed)
 
 #    class Node:
-#        def __init__(self, name, idx_anchor_0, idx_anchor_1, train_parameters, children):
+#        def __init__(self, name, idx_anchor_0, idx_anchor_1, 
+#                     train_parameters, children):
 #            self.name = name
 #            self.idx_anchor_0 = idx_anchor_0
 #            self.idx_anchor_1 = idx_anchor_1
@@ -316,16 +317,19 @@ def test_select_child_node(ts_train, parameters_train, times):
 #    parameter = np.array([0.2,0.8])
 #    expected_child = node1.children[0]
 #    result = select_child_node(parameter, node1)
-#    assert result == expected_child, f"Expected {expected_child}, but got {result}"
+#    assert result == expected_child, f"Expected {expected_child},
+#    but got {result}"
 
 # Test 2: Distancia de parameter a anchor_0 es mayor que a anchor_1
 #    parameter = np.array([0.7,0.5])
 #    expected_child = node1.children[1]
 #    result = select_child_node(parameter, node1)
-# assert result == expected_child, f"Expected {expected_child}, but got {result}"
+# assert result == expected_child, f"Expected {expected_child}, 
+# but got {result}"
 
 # Test 3: Distancia de parameter a anchor_0 es igual que a anchor_1
 # parameter = np.array([0.5,0.5])
 # expected_child = node2.children[0]
 # result = select_child_node(parameter, node2)
-# assert result == expected_child, f"Expected {expected_child}, but got {result}"
+# assert result == expected_child, f"Expected {expected_child}, 
+# but got {result}"

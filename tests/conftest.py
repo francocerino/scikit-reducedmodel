@@ -1,3 +1,5 @@
+"""Fixtures for pytest."""
+
 # =============================================================================
 # IMPORTS
 # =============================================================================
@@ -29,31 +31,38 @@ BESSEL_PATH = PATH / "bessel"
 
 
 @pytest.fixture
-def parameters_train():
-    path = WAVES_PATH / "q_train_1d-seed_eq_1.npy"
-    return np.load(path)
-
-
-@pytest.fixture
-def parameters_test():
-    path = WAVES_PATH / "q_test_1d-seed_eq_1.npy"
-    return np.load(path)
-
-
-@pytest.fixture
 def ts_train():
+    """Training set with complex gravitational waves, associated to a
+    1d parameter space."""
     path = WAVES_PATH / "ts_train_1d-seed_eq_1.npy"
     return np.load(path)
 
 
 @pytest.fixture
 def ts_test():
+    """Test set with complex gravitational waves, associated to a
+    1d parameter space."""
     path = WAVES_PATH / "ts_test_1d-seed_eq_1.npy"
     return np.load(path)
 
 
 @pytest.fixture
+def parameters_test():
+    """Parameters associated to 'ts_test', which has a 1d parameter space."""
+    path = WAVES_PATH / "q_test_1d-seed_eq_1.npy"
+    return np.load(path)
+
+
+@pytest.fixture
+def parameters_train():
+    """Parameters associated to 'ts_train', which has a 1d parameter space."""
+    path = WAVES_PATH / "q_train_1d-seed_eq_1.npy"
+    return np.load(path)
+
+
+@pytest.fixture
 def times():
+    """Physical points of 'ts_train' and 'ts_test' waveforms."""
     path = WAVES_PATH / "times_1d-seed_eq_1.npy"
     return np.load(path)
 
