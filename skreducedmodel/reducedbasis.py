@@ -89,7 +89,6 @@ class ReducedBasis:
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
         """
-
         self._fit(
             training_set,
             parameters,
@@ -107,7 +106,7 @@ class ReducedBasis:
         training_set,
         parameters,
         physical_points,
-        # Los siguientes son parametros internos para la función self.fit(). 
+        # Los siguientes son parametros internos para la función self.fit().
         index_seed,
         parent,
         node_idx,
@@ -212,7 +211,6 @@ class ReducedBasis:
         nn = 0
         # print(nn, sigma, next_index)
         while sigma > self.greedy_tol and self.nmax > nn + 1:
-
             if next_index in greedy_indices:
                 break
 
@@ -264,7 +262,6 @@ class ReducedBasis:
             and self.greedy_tol < node.errors[-1]
             and len(node.indices) > 1
         ):
-
             idxs_subspace0, idxs_subspace1 = self.partition(
                 parameters, node.idx_anchor_0, node.idx_anchor_1
             )
