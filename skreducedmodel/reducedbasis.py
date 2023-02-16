@@ -1,14 +1,14 @@
 """Reduced Basis module."""
 
-import logging
-
 from anytree import Node
 
 import numpy as np
 
 from . import integrals
 
-logger = logging.getLogger("arby.basis")
+# import logging
+
+# logger = logging.getLogger("arby.basis")
 
 
 class ReducedBasis:
@@ -62,6 +62,7 @@ class ReducedBasis:
         self.integration_rule = integration_rule
         self.__first_iteration = True
         self._trained = False
+        assert self.nmax > 0 and self.lmax >= 0
 
     # comenzamos la implementacion de reduced_basis
     # la idea es acoplar esto al método fit de ReducedModel.
@@ -70,13 +71,6 @@ class ReducedBasis:
         training_set,
         parameters,
         physical_points,
-        # estas quiero que no se puedan modificar por el usuario.
-        # son solo valores para la primera llamada de la
-        # funcion fit de la recursion
-        parent=None,
-        node_idx=0,
-        deep=0,
-        index_seed=None,  # = self.index_seed_global_rb
     ) -> None:
         """Build a reduced basis from training data.
 
@@ -95,20 +89,40 @@ class ReducedBasis:
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
         """
+
+        self._fit(
+            training_set,
+            parameters,
+            physical_points,
+            index_seed=self.index_seed_global_rb,
+            parent=None,
+            node_idx=0,
+            deep=0,
+        )
+
+        self._trained = True
+
+    def _fit(
+        self,
+        training_set,
+        parameters,
+        physical_points,
+        # Los siguientes son parametros internos para la función self.fit(). 
+        index_seed,
+        parent,
+        node_idx,
+        deep,
+    ) -> None:
         _validate_parameters(parameters)
         _validate_physical_points(physical_points)
         _validate_training_set(training_set)
 
-        assert self.nmax > 0 and self.lmax >= 0
-
         if self.__first_iteration is True:
-            index_seed = self.index_seed_global_rb
             assert parent is None and node_idx == 0 and deep == 0
-            # index_seed == self.index_seed_global_rb
             self.__first_iteration = False
 
-        # create a node for the tree
-        # if the tree does not exists, create it
+        # Create a node for the tree.
+        # If the tree does not exists, create it.
         if parent is not None:
             node = Node(
                 name=parent.name + (node_idx,),
@@ -145,7 +159,6 @@ class ReducedBasis:
         basis_data = np.empty((max_rank, nsamples), dtype=training_set.dtype)
 
         norms = integration.norm(training_set)
-
         if self.normalize:
             # normalize training set
             training_set = np.array(
@@ -194,7 +207,8 @@ class ReducedBasis:
         sigma = greedy_errors[0]
 
         # ====== Start greedy loop ======
-        logger.debug("\n Step", "\t", "Error")
+
+        # logger.debug("\n Step", "\t", "Error")
         nn = 0
         # print(nn, sigma, next_index)
         while sigma > self.greedy_tol and self.nmax > nn + 1:
@@ -224,7 +238,7 @@ class ReducedBasis:
 
             sigma = errs[next_index]
             # print(nn, sigma, next_index)
-            logger.debug(nn, "\t", sigma)
+            # logger.debug(nn, "\t", sigma)
 
         # Prune excess allocated entries
         greedy_errors, proj_matrix = _prune(greedy_errors, proj_matrix, nn + 1)
@@ -232,7 +246,8 @@ class ReducedBasis:
             # restore proj matrix
             proj_matrix = norms * proj_matrix
 
-        # a esto se lo puede guardar solo cuando el nodo es una hoja del árbol
+        # a datos de acá se los puede guardar solo cuando el nodo
+        # es una hoja del árbol.
         node.basis = basis_data[: nn + 1]
         node.indices = greedy_indices
         node.idx_anchor_0 = node.indices[0]
@@ -258,7 +273,7 @@ class ReducedBasis:
             node.idxs_subspace0 = idxs_subspace0
             node.idxs_subspace1 = idxs_subspace1
 
-            self.fit(
+            self._fit(
                 training_set[idxs_subspace0],
                 parameters[idxs_subspace0],
                 physical_points,
@@ -268,7 +283,7 @@ class ReducedBasis:
                 index_seed=0,
             )
 
-            self.fit(
+            self._fit(
                 training_set[idxs_subspace1],
                 parameters[idxs_subspace1],
                 physical_points,
@@ -277,8 +292,6 @@ class ReducedBasis:
                 deep=deep + 1,
                 index_seed=0,
             )
-
-        self._trained = True
 
     @property
     def is_trained(self):
@@ -523,8 +536,8 @@ def select_child_node(parameter, node):
     anchor_0 = node.train_parameters[node.idx_anchor_0]
     anchor_1 = node.train_parameters[node.idx_anchor_1]
 
-    dist_anchor_0 = np.linalg.norm(anchor_0 - parameter)  # 2-norm.
-    dist_anchor_1 = np.linalg.norm(anchor_1 - parameter)
+    dist_anchor_0 = np.linalg.norm(anchor_0 - parameter)  # 2-norm used.
+    dist_anchor_1 = np.linalg.norm(anchor_1 - parameter)  # 2-norm used.
 
     if dist_anchor_0 < dist_anchor_1:
         if node.children[0].name[-1] == 0:

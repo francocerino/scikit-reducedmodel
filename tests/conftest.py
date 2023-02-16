@@ -32,16 +32,22 @@ BESSEL_PATH = PATH / "bessel"
 
 @pytest.fixture
 def ts_train():
-    """Training set with complex gravitational waves, associated to a
-    1d parameter space."""
+    """
+    Training set.
+
+    Complex gravitational waves, associated to a 1d parameter space.
+    """
     path = WAVES_PATH / "ts_train_1d-seed_eq_1.npy"
     return np.load(path)
 
 
 @pytest.fixture
 def ts_test():
-    """Test set with complex gravitational waves, associated to a
-    1d parameter space."""
+    """
+    Test set.
+
+    Complex gravitational waves, associated to a 1d parameter space.
+    """
     path = WAVES_PATH / "ts_test_1d-seed_eq_1.npy"
     return np.load(path)
 

@@ -1,1 +1,1 @@
-""" __init__.py from 'tests' folder"""
+"""__init__.py from 'tests' folder."""
