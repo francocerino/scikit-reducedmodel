@@ -33,10 +33,57 @@ cd scikir-reducedmodel
 pip install .
 ```
 
+# Quick Usage
+
+In order to construct a reduced model, we require knowledge of a training set (training_set). 
+That is, we need to be familiar with a set of functions parameterized 
+by a real number λ, denoted as :math:`f_λ(x)`.
+
+We need also a distretization of the :math:`x` (x_set) and of the :math:`λ` space (param).
+
+Then, we can first built the reduced basis, in this case, we use the default parameters. 
+```python
+
+from skreducedmodel.reducedbasis import ReducedBasis
+
+rb = ReducedBasis()
+rb.fit(training_set = training_set,
+       parameters = param
+       physical_points = x_set)
+```
+The second step is built the empirical interpolator with the reduced basis generated
+```python 
+
+from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
+
+eim = EmpiricalInterpolation(rb)
+eim.fit()
+```
+Finally, we construct the reduced model from our eim object
+```python 
+   
+from skreducedmodel.surrogate import Surrogate
+
+model = Surrogate(eim)
+model.fit()
+```
+
+In case we are interested in studying the ReducedBasis and EmpiricalInterpolation objects, the package has a function that automates the whole process.
+```python
+
+from skreducedmodel.mksurrogate import mksurrogate
+
+surrogate = mksurrogate(parameters = param,
+                        training_set = training_set,
+                        physical_points = x_set,
+                        )
+
+```
+
 
 ## Authors
 
-- Franco Cerino <[francocerino@gmail.com](francocerino@gmail.com)> ([[FaMAF-UNC][]).
+- Franco Cerino <[francocerino@gmail.com](francocerino@gmail.com)> ([FaMAF-UNC][]).
 
 - Agustín Rodríguez-Medrano  ([IATE-OAC-CONICET][], [FaMAF-UNC][]).
 

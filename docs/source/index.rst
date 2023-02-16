@@ -54,21 +54,31 @@ Then, we can first built the reduced basis, in this case, we use the default par
             parameters = param
             physical_points = x_set)
 
-The second step is built the empirical interpolator
+The second step is built the empirical interpolator with the reduced basis generated
 :: 
 
       from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 
-      eim = EmpiricalInterpolation()
+      eim = EmpiricalInterpolation(rb)
       eim.fit()
 
-Finally, we construct the reduced model
+Finally, we construct the reduced model from our eim object
 :: 
    
       from skreducedmodel.surrogate import Surrogate
 
-      model = Surrogate()
+      model = Surrogate(eim)
       model.fit()
+
+In case we are interested in studying the ReducedBasis and EmpiricalInterpolation objects, the package has a function that automates the whole process.
+::
+   
+      from skreducedmodel.mksurrogate import mksurrogate
+
+      surrogate = mksurrogate(parameters = param,
+                              training_set = training_set,
+                              physical_points = x_set,
+                              )
 
 
 
