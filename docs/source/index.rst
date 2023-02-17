@@ -15,7 +15,7 @@ Scikit-ReduceModel's documentation!
 This code is an extension of the standard reduced-base framework and provides an efficient 
 and accurate solution for model building. It implements the `hp-greedy refinement <https://arxiv.org/abs/2212.08554>`_ strategy, an enhancement 
 approach for reduced-base model building. The approach uses a parameter space partitioning, a local 
-reduced basis and a `binary tree <https://en.wikipedia.org/wiki/Binary_tree>` as the resulting structure, all obtained automatically.
+reduced basis and a `binary tree <https://en.wikipedia.org/wiki/Binary_tree>`_ as the resulting structure, all obtained automatically.
 
 
 
