@@ -8,7 +8,7 @@ include *.png
 recursive-include dist *.gz
 recursive-include dist *.whl
 recursive-include examples/waveforms *.npy
-recursive-include examples/ *.ipynb
+recursive-include examples *.ipynb
 
 
 global-exclude *~
@@ -20,10 +20,12 @@ exclude .travis.ylm
 exclude .gitignore
 exclude *.yaml
 exclude .coverage
-exclude .ipynb
+exclude *.ipynb
 
 recursive-exclude skreducedmodel/__pycache__ *
 recursive-exclude old_code *
 recursive-exclude tests *
 recursive-exclude docs *
+recursive-exclude *egg-info *
+recursive-exclude dist *
 
