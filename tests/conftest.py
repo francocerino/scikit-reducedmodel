@@ -18,7 +18,7 @@ import pytest
 # =============================================================================
 
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
-WAVES_PATH = PATH / "waveforms"
+WAVES_PATH = PATH / "../waveforms"
 
 
 PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
