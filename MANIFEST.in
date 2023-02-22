@@ -3,7 +3,7 @@ include README
 include *txt
 include *.ipynb
 recursive-include skreducedmodel *
-include wavesforms *
+recursive-include wavesforms *.npy
 
 exclude tox.ini
 exclude .flake8
