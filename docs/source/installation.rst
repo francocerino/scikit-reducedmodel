@@ -8,6 +8,6 @@ To install the latest stable version of ScikitReducedModel from PyPI::
 To install the developer version (may be unstable)::
 
     $ git clone https://github.com/francocerino/scikit-reducedmodel
-    $ cd scikir-reducedmodel
+    $ cd scikit-reducedmodel
     $ pip install .
 

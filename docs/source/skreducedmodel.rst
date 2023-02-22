@@ -28,10 +28,27 @@ skreducedmodel.reducedbasis module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+skreducedmodel.surrogate module
+----------------------------------
 
-.. automodule:: skreducedmodel
+.. automodule:: skreducedmodel.surrogate
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+skreducedmodel.mksurrogate module
+----------------------------------
+
+.. automodule:: skreducedmodel.mksurrogate
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. Module contents 
+.. ---------------
+
+.. .. automodule:: skreducedmodel
    :members:
    :undoc-members:
    :show-inheritance:
