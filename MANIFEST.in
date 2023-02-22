@@ -3,15 +3,27 @@ include README
 include *txt
 include *.ipynb
 recursive-include skreducedmodel *
-recursive-include wavesforms *.npy
+include *.png
+
+recursive-include dist *.gz
+recursive-include dist *.whl
+recursive-include examples/waveforms *.npy
+recursive-include examples/ *.ipynb
+
+
+global-exclude *~
+global-exclude *.rst~
 
 exclude tox.ini
 exclude .flake8
 exclude .travis.ylm
+exclude .gitignore
+exclude *.yaml
+exclude .coverage
+exclude .ipynb
 
 recursive-exclude skreducedmodel/__pycache__ *
 recursive-exclude old_code *
 recursive-exclude tests *
 recursive-exclude docs *
 
-global-exclude *~
