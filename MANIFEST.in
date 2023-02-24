@@ -19,15 +19,14 @@ exclude *.yaml
 exclude .coverage
 exclude *.ipynb
 exclude MANIFEST.in
-exclude *.toml
 exclude index.html
 
 recursive-exclude skreducedmodel/__pycache__ *
 recursive-exclude old_code *
 recursive-exclude tests *
 recursive-exclude docs *
-recursive-exclude Scikit_ReducedModel.egg-info *
 recursive-exclude dist *
 recursive-exclude examples/waveforms *.npy
 recursive-exclude examples *.ipynb
+recursive-exclude Scikit_ReducedModel.egg-info *
 
