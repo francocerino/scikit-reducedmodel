@@ -9,7 +9,6 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-# import skreducemodel
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -22,14 +21,20 @@ release = "0.0.1"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+#extensions = [
+#    "sphinx.ext.autodoc",
+#    "sphinx.ext.napoleon",
+#    "sphinx.ext.coverage",
+#    "sphinx.ext.mathjax",
+#    "sphinx.ext.intersphinx",
+#    "sphinx.ext.viewcode",
+#    "sphinx.ext.autosummary",
+#    "nbsphinx",
+#]
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "sphinx.ext.coverage",
     "sphinx.ext.mathjax",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.autosummary",
     "nbsphinx",
 ]
 
@@ -45,3 +50,7 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 # html_theme = 'alabaster'
 # html_static_path = ['_static']
+
+
+coverage_show_missing_items = True
+
