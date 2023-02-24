@@ -9,11 +9,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "Scikit-ReducedModel"
 version = "0.0.1"
-authors = [{name = "Franco Cerino", email = "--@gmail.com"}]
+authors = [{name = "Franco Cerino", email = "francocerino@gmail.com"},
+           {name =  "Agustín Rodríguez-Medrano, email = "arodriguez@unc.edu.ar" }]
 license = {text = "The MIT License"}
 readme = "README.md"
 description = "Construction of Reduced Models in Python"
-keywords = ["reduced models", "machine learning", "gravitational waves"]
+keywords = ["reduced order model", "machine learning", "gravitational waves", "reduced basis", "surrogate model"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Education",
