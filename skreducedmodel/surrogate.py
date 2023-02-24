@@ -43,8 +43,11 @@ class Surrogate:
         self._trained = False
 
     def fit(self) -> None:
-        """ Build a surrogate model valid for the entire parameter domain.
-        Regressions at empirical times are trained to build the surrogate model.
+        """Construct the model.
+
+        Build a surrogate model valid for the entire parameter domain.
+        Regressions at empirical times are trained to build the
+        surrogate model.
         """
         # train surrogate stage
         for leaf in self.eim.reduced_basis.tree.leaves:

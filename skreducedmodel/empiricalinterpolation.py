@@ -16,7 +16,7 @@ class EmpiricalInterpolation:
 
     Implements EIM algorithm:
 
-        The Empirical Interpolation Method (EIM) [TiglioAndVillanueva2021]_
+        The Empirical Interpolation Method (EIM) (TiglioAndVillanueva2021)
         introspects the basis and selects a set of interpolation ``nodes`` from
         the physical domain for building an ``interpolant`` matrix using the
         basis and the selected nodes. The ``interpolant`` matrix can be used to
@@ -38,8 +38,7 @@ class EmpiricalInterpolation:
         ----------
         reduced_basis : ReducedBasis, optional
             instance of a reduced basis, by default None
-        """        
-
+        """
         self.reduced_basis = (
             ReducedBasis() if reduced_basis is None else reduced_basis
         )

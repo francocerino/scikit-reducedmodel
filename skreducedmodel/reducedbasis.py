@@ -49,7 +49,7 @@ class ReducedBasis:
         normalize=False,
         integration_rule="riemann",
     ) -> None:
-        """_summary_
+        """summary.
 
         Parameters
         ----------
@@ -57,7 +57,7 @@ class ReducedBasis:
             Index of the training_set element that is going to be the seed
               of the greedy algorithm, by default 0
         lmax : int, optional
-            Maximum depth of the tree built by the partitioning of the 
+            Maximum depth of the tree built by the partitioning of the
               parameter space, by default 0
         nmax : _type_, optional
             Maximum dimension of the reduced basis, by default np.inf
@@ -67,7 +67,7 @@ class ReducedBasis:
             Normalize the training set, by default False
         integration_rule : str, optional
             By default "riemann"
-        """    
+        """
         # the default seed is the first of the array "parameters"
         self.index_seed_global_rb = index_seed_global_rb
         self.lmax = lmax
@@ -312,7 +312,7 @@ class ReducedBasis:
         Returns
         -------
         Bool
-        """        
+        """
         return self._trained
 
     def search_leaf(self, parameters, node):
