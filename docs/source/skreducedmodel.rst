@@ -27,11 +27,3 @@ skreducedmodel.reducedbasis module
    :members:
    :undoc-members:
    :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: skreducedmodel
-   :members:
-   :undoc-members:
-   :show-inheritance:
