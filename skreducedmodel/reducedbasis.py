@@ -540,7 +540,7 @@ def select_child_node(parameter, node):
     and returns the child node with the closest anchor. If the
     distances are equal, a random choice is made.
 
-    Parameter:
+    Parameters
     ----------
     parameter : np.ndarray
         parameter to evaluate by the sustitute model in a subspace
@@ -579,14 +579,24 @@ def select_child_node(parameter, node):
 def normalize_set(array, domain, rule="riemann"):
     """Normalize set.
 
-    Normalize a set of functions or arrays. The normalization is
+    Normalize a set of functions or arrays.
 
-    Parameter:
+    Parameters
     ----------
-    array : np.ndarray
-    domain : np.ndarray
-    rule : integration rule used to calculate the norm (default="riemann")
+    array :  np.ndarray
+        Set of functions to normalize.
+    domain :  np.ndarray
+        Physical domain of the set of functions.
+    rule : str, optional
+        Integration rule used to calculate the norm (default="riemann"),
+            by default "riemann"
+
+    Returns
+    -------
+    np.ndarray
+        Normalized set of functions.
     """
+
     integration = integrals.Integration(domain, rule)
     norms = integration.norm(array)
 
