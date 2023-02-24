@@ -30,3 +30,6 @@ htmlcov/
 
 *swp
 *~
+
+Scikit-ReducedModel*
+dist/*
