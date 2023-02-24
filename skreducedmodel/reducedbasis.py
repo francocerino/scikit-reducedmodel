@@ -49,10 +49,25 @@ class ReducedBasis:
         normalize=False,
         integration_rule="riemann",
     ) -> None:
-        """Init Method.
+        """_summary_
 
-        Initialize the class.
-        """
+        Parameters
+        ----------
+        index_seed_global_rb : int, optional
+            Index of the training_set element that is going to be the seed
+              of the greedy algorithm, by default 0
+        lmax : int, optional
+            Maximum depth of the tree built by the partitioning of the 
+              parameter space, by default 0
+        nmax : _type_, optional
+            Maximum dimension of the reduced basis, by default np.inf
+        greedy_tol : _type_, optional
+            Precision to reach by the greedy algorithm, by default 1e-12
+        normalize : bool, optional
+            Normalize the training set, by default False
+        integration_rule : str, optional
+            By default "riemann"
+        """    
         # the default seed is the first of the array "parameters"
         self.index_seed_global_rb = index_seed_global_rb
         self.lmax = lmax
@@ -74,18 +89,18 @@ class ReducedBasis:
     ) -> None:
         """Build a reduced basis from training data.
 
-        This function implements the Reduced Basis (RB) greedy algorithm for
-        building an orthonormalized reduced basis out from training data. The
-        basis is built for reproducing the training functions with the user
+        This function implements the Reduced Basis (RB) greedy algorithm to
+        build an orthonormalized reduced basis out from training data. The
+        basis is built to reproduce the training functions with the user
         specified tolerance by linear combinations
         of its elements.
 
         Parameters
         ----------
         training_set : numpy.ndarray
-           The training set of functions.
+           Training set functions.
         parameters : numpy.ndarray
-           aca decir algo...
+           Associated parameters to the training set functions.
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
         """
@@ -292,7 +307,12 @@ class ReducedBasis:
 
     @property
     def is_trained(self):
-        """Return True only if the instance is trained, False otherwise."""
+        """Return True only if the instance is trained, False otherwise.
+
+        Returns
+        -------
+        Bool
+        """        
         return self._trained
 
     def search_leaf(self, parameters, node):
@@ -306,12 +326,12 @@ class ReducedBasis:
         Parameters
         ----------
         parameters : np.ndarray
-            Set of parameters to search in the tree
+            Set of parameters to search in the tree.
 
         Returns
         -------
         node : np.ndarray
-            Set of nodes where the parameters are located in the tree
+            Set of nodes where the parameters are located in the tree.
         """
         # parameters: conjunto de parametros que se quiere buscar sus
         # respectivas bases reducidas.

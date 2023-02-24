@@ -14,8 +14,7 @@ class InputError(ValueError):
 
 
 def mksurrogate(instance=None, **kwargs):
-    """
-    Trains and returns a Surrogate model.
+    """ Trains and returns a Surrogate model.
 
     Factory function for the classes ReducedBasis, EmpiricalInterpolation
     and Surrogate.
@@ -28,14 +27,34 @@ def mksurrogate(instance=None, **kwargs):
 
     Parameters
     ----------
-    instance: reduced basis or eim instance.
-    kwargs: training data or hyperparameters for one of the classes used.
+    instance : _type_, optional
+        reduced basis or eim instance, by default None
+
+    kwargs:
+    Training data or hyperparameters for the given instance.
 
     Returns
     -------
-    A trained Surrogate model.
+    Surrogate
+        A trained surrogate model, ready to make predictions.
 
-    """
+
+    Raises
+    ------
+    InputError
+        Bad parameters given as input to the function.
+        Cases:
+            - A reduced basis or eim instance is not needed as input
+            if training data is given. If want to specify
+            hyperparameters when using a function or method, they
+            must be passed as kwargs.
+            - 'input' must not be given. It is not a parameter to use.
+            - If an instance of ReducedBasis is given, must not 
+            be given hyperparameters of it.
+            - There is no training data to build a surrogate model
+            - if 'instance' is given, must be an instance of 
+            EmpiricalInterpolation or ReducedBasis.
+    """    
     # obtain given input data to train ReducedBasis, if needed.
     rb_fit_parameters = ["training_set", "parameters", "physical_points"]
     kwargs_rb_fit = {k: v for k, v in kwargs.items() if k in rb_fit_parameters}

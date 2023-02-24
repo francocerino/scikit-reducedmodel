@@ -29,12 +29,8 @@ class Surrogate:
 
     Attributes
     ----------
-    _trained : bool
-        .
-    poly_deg : int
-        .
     eim :
-        .
+        Instance of EmpiricalInterpolation.
     """
 
     def __init__(self, eim=None, poly_deg=3) -> None:
@@ -47,12 +43,8 @@ class Surrogate:
         self._trained = False
 
     def fit(self) -> None:
-        """Build a surrogate model from EmpiricalInterpolation class.
-
-        Parameters
-        ----------
-        parameter1 : numpy.ndarray
-           Explanation
+        """ Build a surrogate model valid for the entire parameter domain.
+        Regressions at empirical times are trained to build the surrogate model.
         """
         # train surrogate stage
         for leaf in self.eim.reduced_basis.tree.leaves:
@@ -97,13 +89,7 @@ class Surrogate:
         return h_in_nodes_splined
 
     def predict(self, parameter):
-        """Evaluate the surrogate model at parameter/s.
-
-        Build a surrogate model valid for the entire parameter domain.
-        The building stage is performed only once for the first function call.
-        For subsequent calls, the method invokes the already fitted model and
-        just evaluates it. The output is an array storing surrogate evaluations
-        at the parameter/s.
+        """Evaluate the surrogate model at a given parameter.
 
         Parameters
         ----------

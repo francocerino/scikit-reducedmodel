@@ -14,19 +14,32 @@ from skreducedmodel.reducedbasis import ReducedBasis
 class EmpiricalInterpolation:
     """Empirital interpolation functions and methods.
 
-    This class is used to build empirical interpolants.
+    Implements EIM algorithm:
+
+        The Empirical Interpolation Method (EIM) [TiglioAndVillanueva2021]_
+        introspects the basis and selects a set of interpolation ``nodes`` from
+        the physical domain for building an ``interpolant`` matrix using the
+        basis and the selected nodes. The ``interpolant`` matrix can be used to
+        approximate a field of functions for which the span of the basis is a
+        good approximant.
 
     Parameters
     ----------
-    reduced_basis : ...
+    reduced_basis : instance of ReducedBasis
     """
 
     # Se inicializa con la clase base reducida
     def __init__(self, reduced_basis=None) -> None:
         """Initialize the class.
 
-        This methods initialize the EmpiritalInterpolation class.
-        """
+        This method initializes the EmpiritalInterpolation class.
+
+        Parameters
+        ----------
+        reduced_basis : ReducedBasis, optional
+            instance of a reduced basis, by default None
+        """        
+
         self.reduced_basis = (
             ReducedBasis() if reduced_basis is None else reduced_basis
         )
@@ -41,7 +54,7 @@ class EmpiricalInterpolation:
         basis and the selected nodes. The ``interpolant`` matrix can be used to
         approximate a field of functions for which the span of the basis is a
         good approximant.
-        Returns: skreducemodel.eim
+
         Container for EIM data. Contains (``interpolant``, ``nodes``).
         """
         for leaf in self.reduced_basis.tree.leaves:
@@ -76,7 +89,12 @@ class EmpiricalInterpolation:
 
     @property
     def is_trained(self):
-        """Return True only if the instance is trained, False otherwise."""
+        """Return True only if the instance is trained, False otherwise.
+
+        Returns
+        -------
+        Bool
+        """
         return self._trained
 
     def _next_vandermonde(self, data, nodes, vandermonde=None):
@@ -99,7 +117,6 @@ class EmpiricalInterpolation:
         """Interpolate a function h at EIM nodes.
 
         This method uses the basis and associated EIM nodes
-        (see the ``arby.Basis.eim_`` method) for interpolation.
 
         Parameters
         ----------
