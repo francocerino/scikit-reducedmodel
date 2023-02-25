@@ -1,0 +1,6 @@
+anytree>=2.8.0
+attrs>=20.1.0
+attr>=0.3.1
+numpy>=1.9.3
+scipy>=0.1
+grispy==0.2.0

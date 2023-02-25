@@ -1,6 +1,7 @@
 include LICENSE
 include README
-include *txt
+include pyproject.toml
+include requirements.txt
 include *.ipynb
 recursive-include skreducedmodel *
 include *.png
