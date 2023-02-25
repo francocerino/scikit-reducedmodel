@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Scikit-ReducedModell"
-version = "0.0.3"
+version = "0.0.4"
 authors = [{name = "Franco Cerino", email = "francocerino@gmail.com"}]
 license = {text = "The MIT License"}
 readme = "README.md"
