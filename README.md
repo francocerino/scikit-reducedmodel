@@ -12,7 +12,7 @@
 
 ![GitHub](https://img.shields.io/github/license/francocerino/scikit-reducedmodel)
 
-![Depfu](https://img.shields.io/depfu/username/francocerino/scikit-reducedmodel)
+![Depfu](https://img.shields.io/depfu/francocerino/scikit-reducedmodel)
 
 Scikit-ReduceModel is a Python package to construct [reduced models](https://en.wikipedia.org/wiki/Model_order_reduction). This code is an extension of the
 standard reduced-base framework and provides an efficient and accurate solution for model building.
