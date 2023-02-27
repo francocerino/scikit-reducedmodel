@@ -10,6 +10,8 @@
 
 [![Code Coverage](https://img.shields.io/codecov/c/github/francocerino/scikit-reducedmodel)](https://codecov.io/github/francocerino/scikit-reducedmodel)
 
+![GitHub](https://img.shields.io/github/license/francocerino/scikit-reducedmodel)
+
 Scikit-ReduceModel is a Python package to construct [reduced models](https://en.wikipedia.org/wiki/Model_order_reduction). This code is an extension of the
 standard reduced-base framework and provides an efficient and accurate solution for model building.
 It implements the hp-greedy refinement strategy, an enhancement approach for reduced-base model
