@@ -40,9 +40,9 @@ pip install .
 
 # Quick Usage
 
-In order to build a reduced order model, we require knowledge of a training set (training_set).
+In order to build a reduced order model, we require knowledge of a training set (training\*set).
 That is, we need to be familiar with a set of functions parameterized
-by a real number λ, denoted as :math:`f<sub>λ</sub> (x)`.
+by a real number λ, denoted as :math:`f\_{λ} (x)`.
 
 We need also a distretization of the :math:`x` (x_set) and of the :math:`λ` space (param).
 
