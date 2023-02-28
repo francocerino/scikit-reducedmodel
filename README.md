@@ -46,9 +46,9 @@ In order to build a surrogate model, we need to be familiar with a set of functi
 
 The known functions at given parameters are named as the training set (`training_set`).
 
-The associated parameters to `training_set` are `parameters`.
+The associated parameters to `training_set` are given by `parameters`.
 
-We need also a distretization of $x$ `x_set`.
+We need also a distretization of $x$ , given by `x_set`.
 
 Then, we can first build the reduced basis, in this case, we use the default parameters.
 
