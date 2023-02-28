@@ -42,12 +42,15 @@ pip install .
 
 # Quick Usage
 
-In order to build a reduced order model, we require knowledge of a training set (`training_set`).
-That is, we need to be familiar with a set of functions parameterized by $λ$, denoted as $f_λ(x)$.
+In order to build a surrogate model, we need to be familiar with a set of functions parameterized by $λ$, denoted as $f_λ(x)$.
 
-We need also a distretization of $x$ (`x_set`) and the parameter space $λ$ (`parameters`) associated to `training_set`.
+The known functions at given parameters are named as the training set (`training_set`).
 
-Then, we can first built the reduced basis, in this case, we use the default parameters.
+The associated parameters to `training_set` are `parameters`.
+
+We need also a distretization of $x$ `x_set`.
+
+Then, we can first build the reduced basis, in this case, we use the default parameters.
 
 ```python
 
@@ -55,11 +58,11 @@ from skreducedmodel.reducedbasis import ReducedBasis
 
 rb = ReducedBasis()
 rb.fit(training_set = training_set,
-       parameters = param
+       parameters = parameters
        physical_points = x_set)
 ```
 
-The second step is built the empirical interpolator with the reduced basis generated
+In the second step, with the reduced basis built, the empirical interpolation method is applied.
 
 ```python
 
@@ -69,7 +72,7 @@ eim = EmpiricalInterpolation(rb)
 eim.fit()
 ```
 
-Finally, we construct the reduced model from our eim object
+Finally, we build the reduced model from our eim object
 
 ```python
 
@@ -79,7 +82,7 @@ model = Surrogate(eim)
 model.fit()
 ```
 
-In case we are interested in studying the ReducedBasis and EmpiricalInterpolation objects, the package has a function that automates the whole process.
+In case we are interested in studying only `Surrogate` objects, the package has a function that automates the whole process.
 
 ```python
 
