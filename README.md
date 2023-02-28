@@ -95,7 +95,19 @@ surrogate = mksurrogate(parameters = param,
 
 ```
 
-To obtain an expression of a function $f´_{λ´}$
+To obtain an expression of a function $f´_{λ´}$ with any of the three methods, we must use:
+
+```python
+rb.transform(f_test,parameter_test)
+```
+
+```python
+eim.transform(f_test,parameter_test)
+```
+
+```python
+surrogate.predict(parameter_test)
+```
 
 ## Contributions
 
