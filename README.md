@@ -44,9 +44,9 @@ pip install .
 
 In order to build a reduced order model, we require knowledge of a training set (`training_set`).
 That is, we need to be familiar with a set of functions parameterized
-by a real number λ, denoted as `(f_λ)(x)`.
+by a real number $λ$, denoted as $f_λ(x)$.
 
-We need also a distretization of the `x` (x_set) and of the `λ` space (param).
+We need also a distretization of $x$ (`x_set`) and the parameter space λ (`parameters`).
 
 Then, we can first built the reduced basis, in this case, we use the default parameters.
 
