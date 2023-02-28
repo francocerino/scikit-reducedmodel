@@ -2,16 +2,15 @@
 
 <img src="logo.png" alt="logo" width="60%">
 
-[![https://github.com/leliel12/diseno_sci_sfw](https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00)](https://github.com/leliel12/diseno_sci_sfw)
+[![PyPI version](https://badge.fury.io/py/Scikit-ReducedModel.svg)](https://badge.fury.io/py/Scikit-ReducedModel)
 [![Python version](https://img.shields.io/badge/python-3.10%20-blue)](https://img.shields.io/badge/python-3.10%20-blue)
 [![Documentation Status](https://readthedocs.org/projects/scikit-reducedmodel/badge/?version=latest)](https://scikit-reducedmodel.readthedocs.io/en/latest/?badge=latest)
-[![Scikit-ReducedModel CI](https://github.com/francocerino/scikit-reducedmodel/actions/workflows/ci.yml/badge.svg)](https://github.com/francocerino/francocerino/actions/workflows/ci.yml)
+[![https://github.com/leliel12/diseno_sci_sfw](https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00)](https://github.com/leliel12/diseno_sci_sfw)
 
+[![Scikit-ReducedModel CI](https://github.com/francocerino/scikit-reducedmodel/actions/workflows/ci.yml/badge.svg)](https://github.com/francocerino/francocerino/actions/workflows/ci.yml)
 [![Code Coverage](https://img.shields.io/codecov/c/github/francocerino/scikit-reducedmodel)](https://codecov.io/github/francocerino/scikit-reducedmodel)
 ![GitHub](https://img.shields.io/github/license/francocerino/scikit-reducedmodel)
 ![Depfu](https://img.shields.io/depfu/francocerino/scikit-reducedmodel)
-[![PyPI version](https://badge.fury.io/py/Scikit-ReducedModel.svg)](https://badge.fury.io/py/Scikit-ReducedModel)
-
 [![Black Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Scikit-ReduceModel is a Python package to construct [reduced models](https://en.wikipedia.org/wiki/Model_order_reduction). This code is an extension of the
