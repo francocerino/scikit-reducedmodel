@@ -95,6 +95,8 @@ surrogate = mksurrogate(parameters = param,
 
 ```
 
+To obtain an expression of a function $f´_{λ´}$
+
 ## Contributions
 
 We encourage users to contribute with ideas, code, or by reporting bugs. To report bugs or issues, users should create an issue in the project repository. To contribute with code, please submit a pull request. We suggest that you contact us at francocerino@gmail.com prior to undertaking any significant improvement that requires substantial effort to address technical and design aspects before beginning development.
