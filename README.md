@@ -78,8 +78,8 @@ Finally, we build the reduced model from our eim object
 
 from skreducedmodel.surrogate import Surrogate
 
-model = Surrogate(eim)
-model.fit()
+surrogate = Surrogate(eim)
+surrogate.fit()
 ```
 
 In case we are interested in studying only `Surrogate` objects, the package has a function that automates the whole process.
