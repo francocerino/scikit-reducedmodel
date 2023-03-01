@@ -22,15 +22,15 @@ jobs:
       - name: Test with tox
         run: tox -r
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest coverage pytest-cov
-          pip install numpy
-      - name: erase .coverage file
-        run: coverage erase
-      - name: generate .coverage report
-        run: pytest tests/ --cov=skreducedmodel/ --cov-append --cov-report=term-missing
+      #      - name: Install dependencies
+      #        run: |
+      #          python -m pip install --upgrade pip
+      #          pip install pytest coverage pytest-cov
+      #          pip install numpy
+      #- name: erase .coverage file
+      #  run: coverage erase
+      #      - name: generate .coverage report
+      #        run: pytest tests/ --cov=skreducedmodel/ --cov-append --cov-report=term-missing
       - name: transform .coverage into coverage.xml
         run: coverage xml
 
