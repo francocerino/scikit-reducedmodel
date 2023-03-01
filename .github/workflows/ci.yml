@@ -30,7 +30,7 @@ jobs:
       - name: erase .coverage file
         run: coverage erase
       - name: generate .coverage report
-        run: pytest tests/ --cov=scikit-reducedmodel/ --cov-append --cov-report=term-missing
+        run: pytest tests/ --cov=skreducedmodel/ --cov-append --cov-report=term-missing
       - name: transform .coverage into coverage.xml
         run: coverage xml
 
