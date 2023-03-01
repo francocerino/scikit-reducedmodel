@@ -21,5 +21,17 @@ jobs:
         run: pip install tox tox-gh-actions
       - name: Test with tox
         run: tox -r
+
+      - name: erase .coverage file
+        run: coverage erase
+      - name: generate .coverage report
+        run: pytest tests/ --cov=scikit-reducedmodel/ --cov-append --cov-report=term-missing
+      - name: transform .coverage into coverage.xml
+        run: coverage xml
+
+      # Creating the badge
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV }}
+          files: /home/runner/work/scikit-reducedmodel/scikit-reducedmodel/coverage.xml
