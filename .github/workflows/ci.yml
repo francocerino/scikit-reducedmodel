@@ -23,7 +23,7 @@ jobs:
         run: tox -r
 
       - name: Install package
-        run: pip install .
+        run: pip install . pytest pytest-cov
       - name: generate .coverage report
         run: pytest tests/ --cov=skreducedmodel/ --cov-append --cov-report=term-missing
       - name: transform .coverage into coverage.xml
