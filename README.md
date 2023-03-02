@@ -10,7 +10,6 @@
 
 [![Code Coverage](https://img.shields.io/codecov/c/github/francocerino/scikit-reducedmodel)](https://codecov.io/github/francocerino/scikit-reducedmodel)
 ![GitHub](https://img.shields.io/github/license/francocerino/scikit-reducedmodel)
-![Depfu](https://img.shields.io/depfu/francocerino/scikit-reducedmodel)
 [![Black Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Scikit-ReduceModel is a Python package to build [reduced order models](https://en.wikipedia.org/wiki/Model_order_reduction). This code gives the
@@ -29,7 +28,7 @@ In science and engineering is known that obtaining numerical simulations by solv
 To install the latest stable version of ScikitReducedModel from PyPI:
 
 ```bash
-pip install skreducedmodel
+pip install Scikit-ReducedModel
 ```
 
 To install the developer version (may be unstable):
