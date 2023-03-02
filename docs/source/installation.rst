@@ -3,7 +3,7 @@ Installation
 
 To install the latest stable version of ScikitReducedModel from PyPI::
 
-    $ pip install skreducedmodel
+    $ pip install Scikit-ReducedModel
 
 To install the developer version (may be unstable)::
 
