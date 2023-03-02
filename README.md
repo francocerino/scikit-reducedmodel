@@ -8,6 +8,7 @@
 [![https://github.com/leliel12/diseno_sci_sfw](https://img.shields.io/badge/DiSoftCompCi-FAMAF-ffda00)](https://github.com/leliel12/diseno_sci_sfw)
 [![Scikit-ReducedModel CI](https://github.com/francocerino/scikit-reducedmodel/actions/workflows/ci.yml/badge.svg)](https://github.com/francocerino/francocerino/actions/workflows/ci.yml)
 
+![Depfu](https://img.shields.io/depfu/francocerino/scikit-reducedmodel)
 [![Code Coverage](https://img.shields.io/codecov/c/github/francocerino/scikit-reducedmodel)](https://codecov.io/github/francocerino/scikit-reducedmodel)
 ![GitHub](https://img.shields.io/github/license/francocerino/scikit-reducedmodel)
 [![Black Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
