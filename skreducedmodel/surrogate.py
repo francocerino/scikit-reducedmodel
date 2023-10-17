@@ -51,8 +51,8 @@ class Surrogate:
         """
         # train surrogate stage
         for leaf in self.eim.reduced_basis.tree.leaves:
-            if np.any(np.iscomplex(leaf.training_set)):
-                leaf.complex_dataset_bool = True
+            if self.eim.reduced_basis.complex_dataset:
+                # leaf.complex_dataset_bool = True
 
                 amp_training_set = np.abs(leaf.training_set)
 
@@ -67,7 +67,7 @@ class Surrogate:
                 )
 
             else:
-                leaf.complex_dataset_bool = False
+                # leaf.complex_dataset_bool = False
                 leaf._cached_spline_model = self._spline_model(
                     leaf, leaf.training_set, leaf.train_parameters
                 )
@@ -109,7 +109,9 @@ class Surrogate:
             parameter, node=self.eim.reduced_basis.tree
         )
 
-        if not leaf.complex_dataset_bool:
+        if (
+            not self.eim.reduced_basis.complex_dataset
+        ):  # if not leaf.complex_dataset_bool:
             h_surrogate_at_nodes = self._prediction_real_dataset(
                 parameter, leaf._cached_spline_model
             )

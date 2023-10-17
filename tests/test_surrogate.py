@@ -145,8 +145,8 @@ def test_consistency_complex_and_real_cases(
     surrogate_complex = Surrogate(eim_complex)
     surrogate_complex.fit()
 
-    assert surrogate_complex.eim.reduced_basis.tree.complex_dataset_bool
-    assert not surrogate.eim.reduced_basis.tree.complex_dataset_bool
+    assert surrogate_complex.eim.reduced_basis.complex_dataset
+    assert not surrogate.eim.reduced_basis.complex_dataset
 
     errors_rom = []
     errors_rom_complex = []

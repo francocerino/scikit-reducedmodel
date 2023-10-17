@@ -7,7 +7,8 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 import os
 import sys
 import pathlib
-#sys.path.insert(0, os.path.abspath("../.."))
+
+# sys.path.insert(0, os.path.abspath("../.."))
 CURRENT_PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 SKRM_PATH = CURRENT_PATH.parent.parent
 

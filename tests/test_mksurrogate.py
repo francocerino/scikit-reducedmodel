@@ -17,6 +17,7 @@ def test_wrong_parameter():
     with pytest.raises(InputError):
         mksurrogate(something=2)
 
+
 def test_instance_class():
     with pytest.raises(InputError):
         eim = EmpiricalInterpolation()
@@ -76,6 +77,7 @@ def test_rb_given_and_hyperparameters_of_it(ts_train, parameters_train, times):
         )
         mksurrogate(rb, lmax=1)
 
+
 def test_rb_given_all_ok(ts_train, parameters_train, times):
     rb = ReducedBasis()
     rb.fit(
@@ -85,6 +87,7 @@ def test_rb_given_all_ok(ts_train, parameters_train, times):
     )
     surrogate = mksurrogate(rb)
     surrogate.predict(1)
+
 
 def test_eim_given_all_ok(ts_train, parameters_train, times):
     rb = ReducedBasis()
@@ -96,6 +99,7 @@ def test_eim_given_all_ok(ts_train, parameters_train, times):
     eim = EmpiricalInterpolation(rb)
     surrogate = mksurrogate(eim)
     surrogate.predict(1)
+
 
 def test_eim_with_no_training_data_fails():
     with pytest.raises(InputError):

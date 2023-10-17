@@ -104,6 +104,9 @@ class ReducedBasis:
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
         """
+
+        self.complex_dataset = np.any(np.iscomplex(training_set))
+
         self._fit(
             training_set,
             parameters,
@@ -259,22 +262,15 @@ class ReducedBasis:
             # restore proj matrix
             proj_matrix = norms * proj_matrix
 
-        # a datos de acá se los puede guardar solo cuando el nodo
-        # es una hoja del árbol.
-        node.basis = basis_data[: nn + 1]
+        node.basis_error = greedy_errors[-1]
         node.indices = greedy_indices
         node.idx_anchor_0 = node.indices[0]
         if len(node.indices) > 1:
             node.idx_anchor_1 = node.indices[1]
-        node.errors = greedy_errors
-        node.projection_matrix = proj_matrix.T
-        node.integration = integration
-        node.training_set = training_set
-        node.train_parameters = parameters
 
         if (
             deep < self.lmax
-            and self.greedy_tol < node.errors[-1]
+            and self.greedy_tol < node.basis_error
             and len(node.indices) > 1
         ):
             idxs_subspace0, idxs_subspace1 = self.partition(
@@ -304,6 +300,16 @@ class ReducedBasis:
                 deep=deep + 1,
                 index_seed=0,
             )
+        else:
+            # estos datos se guardan solo cuando el nodo
+            # es hoja del árbol.
+
+            node.basis = basis_data[: nn + 1]
+            node.errors = greedy_errors
+            node.integration = integration
+            node.train_parameters = parameters
+            node.projection_matrix = proj_matrix.T
+            node.training_set = training_set
 
     @property
     def is_trained(self):
