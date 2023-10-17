@@ -53,7 +53,6 @@ class Surrogate:
         for leaf in self.eim.reduced_basis.tree.leaves:
             if self.eim.reduced_basis.complex_dataset:
                 # leaf.complex_dataset_bool = True
-
                 amp_training_set = np.abs(leaf.training_set)
 
                 phase_training_set = np.angle(leaf.training_set)
