@@ -46,10 +46,10 @@ extensions = [
     "sphinx.ext.napoleon",
     "nbsphinx",
     "sphinx.ext.mathjax",
-    "sphinx_copybutton"
+    "sphinx_copybutton",
 ]
 
-highlight_language = 'none'
+highlight_language = "none"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -57,18 +57,22 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', '**.ipynb_checkpoints', 'bessel.ipynb',
-                    'basis/Basis/Methods']
+exclude_patterns = [
+    "_build",
+    "**.ipynb_checkpoints",
+    "bessel.ipynb",
+    "basis/Basis/Methods",
+]
 
 
 # Ignore patters in renderization
 # Everything between --> will be omitted
 def setup(app):
     """Ignore everything between lines that contain the WORD."""
-    WORD = '-->'
-    app.connect('autodoc-process-docstring',
-                between(f'^.*{WORD}.*$', exclude=True)
-                )
+    WORD = "-->"
+    app.connect(
+        "autodoc-process-docstring", between(f"^.*{WORD}.*$", exclude=True)
+    )
     return app
 
 

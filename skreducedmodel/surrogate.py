@@ -1,10 +1,12 @@
 """Surrogate module."""
 
+import gwtools
+
 import numpy as np
 
 from scipy.interpolate import splev, splrep
 
-from .empiricalinterpolation import EmpiricalInterpolation
+from .empiricalinterpolation import EmpiricalInterpolation, _error
 
 
 class Surrogate:
@@ -53,9 +55,13 @@ class Surrogate:
         for leaf in self.eim.reduced_basis.tree.leaves:
             if self.eim.reduced_basis.complex_dataset:
                 # leaf.complex_dataset_bool = True
-                amp_training_set = np.abs(leaf.training_set)
+                amp_training_set = np.array(
+                    [gwtools.amp(h) for h in leaf.training_set]
+                )  # np.abs(leaf.training_set)
 
-                phase_training_set = np.angle(leaf.training_set)
+                phase_training_set = np.array(
+                    [gwtools.phase(h) for h in leaf.training_set]
+                )  # np.angle(leaf.training_set)
 
                 leaf._cached_spline_model_amp = self._spline_model(
                     leaf, amp_training_set, leaf.train_parameters
@@ -135,3 +141,6 @@ class Surrogate:
         )
 
         return h_surrogate_at_nodes
+
+    def score(self, h1, h2, domain, rule="riemann"):
+        return _error(h1, h2, domain, rule)

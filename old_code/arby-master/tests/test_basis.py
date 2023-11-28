@@ -230,7 +230,7 @@ def test_linear_model(normalize, rule):
     x = np.linspace(1, 2, 101)
 
     # create a training set for f(nu, x) = nu * x^2
-    training = np.array([nu * x ** 2 for nu in nu])
+    training = np.array([nu * x**2 for nu in nu])
     rb_data = arby.reduced_basis(
         training_set=training,
         physical_points=x,
@@ -254,7 +254,7 @@ def test_2dim_model(normalize, rule):
     x = np.linspace(1, 2, 101)
 
     # create a training set for f(nu, x) = sin(nu) * x^2 + nu^2 * x^3
-    training = np.array([np.sin(nu) * x ** 2 + nu ** 2 * x ** 3 for nu in nu])
+    training = np.array([np.sin(nu) * x**2 + nu**2 * x**3 for nu in nu])
     rb_data = arby.reduced_basis(
         training_set=training,
         physical_points=x,

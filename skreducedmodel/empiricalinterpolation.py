@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from skreducedmodel.reducedbasis import ReducedBasis
+from skreducedmodel.reducedbasis import ReducedBasis, _error
 
 
 # =================================
@@ -134,3 +134,6 @@ class EmpiricalInterpolation:
         h_at_nodes = h[leaf.nodes]
         h_interpolated = leaf.interpolant @ h_at_nodes
         return h_interpolated.T
+
+    def score(self, h1, h2, domain, rule="riemann"):
+        return _error(h1, h2, domain, rule)

@@ -371,6 +371,20 @@ class ReducedBasis:
         # search leaf
         leaf = self.search_leaf(parameters, node=self.tree)
 
+        # leafs = [self.search_leaf(parameter, node=self.tree)\
+        #  for parameter in parameters]
+        # projected_functions = []
+        # for leaf, test_function in zip(leafs, test_set):
+        #     s = slice(*s)
+        #     projected_function = 0.0
+        #     for e in leaf.basis[s]:
+        #         projected_function += np.tensordot(
+        #         leaf.integration.dot(e, test_function), e, axes=0
+        #          )
+        #     projected_functions.append(projected_function)
+        # projected_functions = np.array(projected_functions)
+        # return projected_function
+
         # use basis associated to leaf
         s = slice(*s)
         projected_function = 0.0
@@ -452,6 +466,9 @@ class ReducedBasis:
                         idxs_subspace_1.append(idx)
 
         return np.array(idxs_subspace_0), np.array(idxs_subspace_1)
+
+    def score(self, h1, h2, domain, rule="riemann"):
+        return _error(h1, h2, domain, rule)  # hacer con herencia de una clase?
 
 
 def _prune(greedy_errors, proj_matrix, num):
@@ -614,7 +631,7 @@ def normalize_set(array, domain, rule="riemann"):
     )
 
 
-def error(h1, h2, domain, rule="riemann"):
+def _error(h1, h2, domain, rule="riemann"):
     """Error function.
 
     The error is computed in the L2 norm (continuous case) or the 2-norm

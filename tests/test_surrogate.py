@@ -1,6 +1,6 @@
 import numpy as np
 
-from skreducedmodel.reducedbasis import ReducedBasis, error
+from skreducedmodel.reducedbasis import ReducedBasis, _error
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 from skreducedmodel.surrogate import Surrogate
 
@@ -69,7 +69,7 @@ def test_predictions_dataset_real_dataset(
     errors_f_model = []
     for h, q in zip(ts_test_real, parameters_test):
         h_rom = f_model.surrogate(q[0])
-        errors_f_model.append(error(h, h_rom, times))
+        errors_f_model.append(_error(h, h_rom, times))
 
     rb = ReducedBasis()
     rb.fit(
@@ -85,7 +85,7 @@ def test_predictions_dataset_real_dataset(
     errors_rom = []
     for h, q in zip(ts_test_real, parameters_test):
         h_rom = rom.predict(q[0])
-        errors_rom.append(error(h, h_rom, times))
+        errors_rom.append(_error(h, h_rom, times))
 
     assert errors_f_model == errors_rom
 
@@ -154,7 +154,7 @@ def test_consistency_complex_and_real_cases(
         h_rom = surrogate.predict(q[0])
         h_rom_complex = surrogate_complex.predict(q[0])
 
-        errors_rom.append(error(h, h_rom, times))
-        errors_rom_complex.append(error(h, h_rom_complex, times))
+        errors_rom.append(_error(h, h_rom, times))
+        errors_rom_complex.append(_error(h, h_rom_complex, times))
 
     assert np.allclose(errors_rom_complex, errors_rom)
