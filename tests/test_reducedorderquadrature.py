@@ -4,8 +4,6 @@ from skreducedmodel.reducedbasis import ReducedBasis
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 from skreducedmodel.reducedorderquadrature import ReducedOrderQuadrature
 
-# hacer que eim este entrenado al entrenar?
-
 
 def test_input_reduced_basis_class():
     with pytest.raises(ValueError):
@@ -16,7 +14,7 @@ def test_input_reduced_basis_class():
 def test_dim_weights_equal_number_eim_nodes(
     ts_train, parameters_train, times, ts_test
 ):
-    # dimension de array de pesos igual que cantidad de nodos empíricos
+    # number of weights must be the same than the number of empirical nodes
     rb = ReducedBasis(
         greedy_tol=1e-16,
         lmax=1,

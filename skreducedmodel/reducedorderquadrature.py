@@ -3,15 +3,12 @@ from .empiricalinterpolation import EmpiricalInterpolation
 
 class ReducedOrderQuadrature:
     def __init__(self, eim) -> None:
-        # se espera que esté entrenado el modelo. agregar error si no lo está
         self.eim = eim
         if not isinstance(self.eim, EmpiricalInterpolation):
             raise ValueError
 
     # simplified version of ROQ. no "t_c", "W", and more.
-    def fit(
-        self, data
-    ) -> None:  # la clase es un estimador, usando la noción de scikit-learn
+    def fit(self, data) -> None:
         # compute weigths of each partition defined by hp-greedy algorithm
         for leaf in self.eim.reduced_basis.tree.leaves:
             leaf._roq_weights = data @ leaf.interpolant
