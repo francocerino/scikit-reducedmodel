@@ -15,10 +15,10 @@ SKRM_PATH = CURRENT_PATH.parent.parent
 sys.path.insert(0, str(SKRM_PATH))
 import skreducedmodel
 
-#GWTOOLS_PATH = /home/fcerino/env_skrm/lib/python3.10/site-packages
-#sys.path.insert(0, GWTOOLS_PATH)
+# GWTOOLS_PATH = /home/fcerino/env_skrm/lib/python3.10/site-packages
+# sys.path.insert(0, GWTOOLS_PATH)
 
-#import gwtools
+# import gwtools
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
