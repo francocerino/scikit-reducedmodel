@@ -58,11 +58,10 @@ def test_accuracy_linear_weigths(
     # build the empirical interpolator
     linear_eim = EmpiricalInterpolation(reduced_basis=linear_rb)
     linear_eim.fit()
-
-    # loop para validar que todas las ondas tienen overlap bien aproximado
-
+    
     tree = linear_eim.reduced_basis.tree
 
+    # loop para validar que todas las ondas tienen overlap bien aproximado
     for index_wave_new in range(len(ts_test)):
         # onda de la cual se van a inferir sus parametros
         wave_new = ts_test[index_wave_new]
@@ -112,7 +111,7 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
 
     quadratic_ts_train = np.real(ts_train * np.conjugate(ts_train))
 
-    # quadratic roq
+    # quadratic ROQ
     quadratic_rb = ReducedBasis(**hyperparameters)
 
     quadratic_rb.fit(
@@ -121,15 +120,14 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
         physical_points=times,
     )
 
-    # we built the empirical interpolator
+    # build the empirical interpolator
     quadratic_eim = EmpiricalInterpolation(reduced_basis=quadratic_rb)
     quadratic_eim.fit()
 
     quadratic_roq = ReducedOrderQuadrature(quadratic_eim)
     quadratic_roq.fit(
         times=times, quadratic_weights=True
-    )  # revisar que esta bien ingresado el input
-    # capaz conviene cambiar la forma de ingresar
+    ) # capaz conviene cambiar la forma de ingresar el input
 
     tree = quadratic_eim.reduced_basis.tree
 
@@ -140,7 +138,6 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
         leaf = quadratic_eim.reduced_basis.search_leaf(
             parameters=paramter_train_wave, node=tree
         )
-        # leaf.nodes # ver que el nodo elegido está bien
 
         eim_train_wave = quadratic_eim.transform(
             q=paramter_train_wave, h=train_wave
@@ -152,9 +149,6 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
                 np.real(train_wave * np.conjugate(train_wave))
             )
         )
-
-        # quadratic_bj = quadratic_roq.predict(2)
-        # = np.real(integration.integral(quadratic_bj))
 
         c_weights = quadratic_roq.predict(2)
 

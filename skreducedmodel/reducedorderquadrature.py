@@ -36,10 +36,6 @@ class ReducedOrderQuadrature:
                 leaf._roq_weights = w_weights
 
             else:
-                # quadratic_bj = leaf.interpolant
-                # c_weights = np.real(integration.integral(quadratic_bj))
-                # leaf._roq_weights = c_weights
-
                 c_weights = []
                 for quadratic_bj in leaf.interpolant.T:
                     c_weight = np.real(integration.integral(quadratic_bj))
