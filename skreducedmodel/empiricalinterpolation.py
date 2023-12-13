@@ -81,6 +81,8 @@ class EmpiricalInterpolation:
             invv_matrix = np.linalg.inv(v_matrix.T)
             interpolant = leaf.basis.T @ invv_matrix
 
+            leaf.invv_matrix = invv_matrix
+            leaf.v_matrix = v_matrix.T
             leaf.interpolant = interpolant
             leaf.nodes = nodes
 
