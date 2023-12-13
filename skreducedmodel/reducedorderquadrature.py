@@ -20,19 +20,15 @@ class ReducedOrderQuadrature:
         self.quadratic_weights = quadratic_weights
         for leaf in self.eim.reduced_basis.tree.leaves:
             if not self.quadratic_weights:
-                integrands = []
+                w_weights = []
                 for bj in leaf.interpolant.T:
                     integrand = bj * np.conjugate(data)
                     # assert integrand.shape == (31300,)
-                    integrands.append(integrand)
-                # assert len(integrands)==len(np.conjugate(leaf.interpolant).T)
-
-                w_weights = []
-                for integrand in integrands:
                     w = integration.integral(integrand)
                     w_weights.append(w)
-                w_weights = np.array(w_weights)
+                # assert len(integrands)==len(np.conjugate(leaf.interpolant).T)
 
+                w_weights = np.array(w_weights)
                 leaf._roq_weights = w_weights
 
             else:
@@ -41,6 +37,7 @@ class ReducedOrderQuadrature:
                     c_weight = np.real(integration.integral(quadratic_bj))
                     c_weights.append(c_weight)
 
+                c_weights = np.array(c_weights)
                 leaf._roq_weights = c_weights
 
     def predict(self, parameter):
