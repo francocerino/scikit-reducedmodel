@@ -58,7 +58,7 @@ def test_accuracy_linear_weigths(
     # build the empirical interpolator
     linear_eim = EmpiricalInterpolation(reduced_basis=linear_rb)
     linear_eim.fit()
-    
+
     tree = linear_eim.reduced_basis.tree
 
     # loop para validar que todas las ondas tienen overlap bien aproximado
@@ -127,7 +127,7 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
     quadratic_roq = ReducedOrderQuadrature(quadratic_eim)
     quadratic_roq.fit(
         times=times, quadratic_weights=True
-    ) # capaz conviene cambiar la forma de ingresar el input
+    )  # capaz conviene cambiar la forma de ingresar el input
 
     tree = quadratic_eim.reduced_basis.tree
 

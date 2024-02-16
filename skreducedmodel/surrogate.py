@@ -96,7 +96,7 @@ class Surrogate:
         ]
         return h_in_nodes_splined
 
-    def predict(self, parameter):
+    def predict(self, parameter, only_regressions=False):
         """Evaluate the surrogate model at a given parameter.
 
         Parameters
@@ -130,10 +130,11 @@ class Surrogate:
                     parameter, leaf._cached_spline_model_phase
                 )
             )
-
-        h_surrogate = leaf.interpolant @ h_surrogate_at_nodes
-
-        return h_surrogate
+        if not only_regressions:
+            h_surrogate = leaf.interpolant @ h_surrogate_at_nodes
+            return h_surrogate
+        else:
+            return h_surrogate_at_nodes
 
     def _prediction_real_dataset(self, parameter, fitted_model):
         h_surrogate_at_nodes = np.array(
