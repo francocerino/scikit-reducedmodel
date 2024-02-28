@@ -214,6 +214,7 @@ class ReducedBasis:
             greedy_indices = [next_index]
             basis_data[0] = training_set[next_index] / norms[next_index]
             proj_matrix[0] = integration.dot(basis_data[0], training_set)
+            # unitary vectors, then use absolute value, not relative:
             sq_errors = _sq_errs_abs
             errs, diff_training = sq_errors(
                 proj_matrix[0], basis_data[0], integration.dot, training_set
