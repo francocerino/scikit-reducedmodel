@@ -75,9 +75,21 @@ class ReducedBasis:
         self.greedy_tol = greedy_tol
         self.normalize = normalize
         self.integration_rule = integration_rule
-        self.__first_iteration = True
-        self._trained = False
+
         assert self.nmax > 0 and self.lmax >= 0
+
+    def get_params(self, deep=True):
+        # TypeError: ReducedBasis.get_params() got an unexpected
+        # keyword argument 'deep'
+
+        return {
+            "index_seed_global_rb": self.index_seed_global_rb,
+            "lmax": self.lmax,
+            "nmax": self.nmax,
+            "greedy_tol": self.greedy_tol,
+            "normalize": self.normalize,
+            "integration_rule": self.integration_rule,
+        }
 
     # comenzamos la implementacion de reduced_basis
     # la idea es acoplar esto al método fit de ReducedModel.
@@ -104,6 +116,8 @@ class ReducedBasis:
         physical_points : numpy.ndarray
            Physical points for quadrature rules.
         """
+        self.__first_iteration = True
+        self._trained = False
 
         self.complex_dataset = np.any(np.iscomplex(training_set))
 
@@ -320,7 +334,11 @@ class ReducedBasis:
         -------
         Bool
         """
-        return self._trained
+
+        if hasattr(self, "_trained"):
+            return self._trained
+        else:
+            return False
 
     def search_leaf(self, parameters, node):
         """Search Leaf.
