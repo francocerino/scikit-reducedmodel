@@ -68,6 +68,7 @@ class ReducedBasis:
         integration_rule : str, optional
             By default "riemann"
         """
+
         # the default seed is the first of the array "parameters"
         self.index_seed_global_rb = index_seed_global_rb
         self.lmax = lmax
@@ -120,6 +121,9 @@ class ReducedBasis:
         self._trained = False
 
         self.complex_dataset = np.any(np.iscomplex(training_set))
+
+        #parameters = X_train[0]
+        #physical_points = X_train[1]
 
         self._fit(
             training_set,
