@@ -122,8 +122,8 @@ class ReducedBasis:
 
         self.complex_dataset = np.any(np.iscomplex(training_set))
 
-        #parameters = X_train[0]
-        #physical_points = X_train[1]
+        # parameters = X_train[0]
+        # physical_points = X_train[1]
 
         self._fit(
             training_set,
