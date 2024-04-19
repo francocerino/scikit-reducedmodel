@@ -44,9 +44,9 @@ def test_empiricalinterpolation_it():
     ti = EmpiricalInterpolation(reduced_basis=model)
     ti.fit()
 
-    assert ti.reduced_basis.tree.nodes[0] == 0
-    assert ti.reduced_basis.tree.nodes[5] == 167
-    assert ti.reduced_basis.tree.nodes[19] == 816
+    assert ti.reduced_basis.tree.empirical_nodes[0] == 0
+    assert ti.reduced_basis.tree.empirical_nodes[5] == 167
+    assert ti.reduced_basis.tree.empirical_nodes[19] == 816
 
 
 def test_interpolator(ts_train, parameters_train, times):
@@ -89,7 +89,7 @@ def test_interpolator(ts_train, parameters_train, times):
         assert leaf.is_leaf
         # test if interpolation is true
         np.testing.assert_allclose(
-            interp_fun[leaf.nodes], sample[leaf.nodes], rtol=1e-5, atol=1e-8
+            interp_fun[leaf.empirical_nodes], sample[leaf.empirical_nodes], rtol=1e-5, atol=1e-8
         )
 
 

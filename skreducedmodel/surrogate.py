@@ -85,7 +85,7 @@ class Surrogate:
         return self._trained
 
     def _spline_model(self, leaf, training_set, parameters):
-        training_compressed = training_set[:, leaf.nodes]
+        training_compressed = training_set[:, leaf.empirical_nodes]
         h_in_nodes_splined = [
             splrep(
                 np.sort(parameters),

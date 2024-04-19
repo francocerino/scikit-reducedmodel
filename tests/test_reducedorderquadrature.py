@@ -30,7 +30,7 @@ def test_dim_weights_equal_number_eim_nodes(
 
     parameters_test = np.array([1, 10])
     for leaf, parameter in zip(eim.reduced_basis.tree.leaves, parameters_test):
-        len(leaf.nodes) == len(roq.predict(parameter))
+        len(leaf.empirical_nodes) == len(roq.predict(parameter))
 
 
 def test_accuracy_linear_weigths(
@@ -82,7 +82,7 @@ def test_accuracy_linear_weigths(
             eim_train_wave = linear_eim.transform(
                 q=paramter_train_wave, h=train_wave
             )
-            eim_train_wave_at_eim_nodes = eim_train_wave[leaf.nodes]
+            eim_train_wave_at_eim_nodes = eim_train_wave[leaf.empirical_nodes]
 
             overlap_fiducial = integration.integral(
                 train_wave * np.conjugate(wave_new)
@@ -142,7 +142,7 @@ def test_accuracy_quadratic_weigths(ts_train, parameters_train, times):
         eim_train_wave = quadratic_eim.transform(
             q=paramter_train_wave, h=train_wave
         )
-        eim_train_wave_at_eim_nodes = eim_train_wave[leaf.nodes]
+        eim_train_wave_at_eim_nodes = eim_train_wave[leaf.empirical_nodes]
 
         h_new_norm_fiducial = np.real(
             integration.integral(

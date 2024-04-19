@@ -84,7 +84,7 @@ class EmpiricalInterpolation:
             leaf.invv_matrix = invv_matrix
             leaf.v_matrix = v_matrix.T
             leaf.interpolant = interpolant
-            leaf.nodes = nodes
+            leaf.empirical_nodes = nodes
 
         self._trained = True
 
@@ -133,7 +133,7 @@ class EmpiricalInterpolation:
         leaf = self.reduced_basis.search_leaf(q, node=self.reduced_basis.tree)
 
         h = h.T
-        h_at_nodes = h[leaf.nodes]
+        h_at_nodes = h[leaf.empirical_nodes]
         h_interpolated = leaf.interpolant @ h_at_nodes
         return h_interpolated.T
 
