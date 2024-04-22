@@ -63,17 +63,17 @@ class Surrogate:
                     [gwtools.phase(h) for h in leaf.training_set]
                 )  # np.angle(leaf.training_set)
 
-                leaf._cached_spline_model_amp = self._spline_model(
+                leaf._cached_regression_model_amp = self._spline_model(
                     leaf, amp_training_set, leaf.train_parameters
                 )
 
-                leaf._cached_spline_model_phase = self._spline_model(
+                leaf._cached_regression_model_phase = self._spline_model(
                     leaf, phase_training_set, leaf.train_parameters
                 )
 
             else:
                 # leaf.complex_dataset_bool = False
-                leaf._cached_spline_model = self._spline_model(
+                leaf._cached_regression_model = self._spline_model(
                     leaf, leaf.training_set, leaf.train_parameters
                 )
 
@@ -118,16 +118,16 @@ class Surrogate:
             not self.eim.reduced_basis.complex_dataset
         ):  # if not leaf.complex_dataset_bool:
             h_surrogate_at_nodes = self._prediction_real_dataset(
-                parameter, leaf._cached_spline_model
+                parameter, leaf._cached_regression_model
             )
 
         else:
             h_surrogate_at_nodes = self._prediction_real_dataset(
-                parameter, leaf._cached_spline_model_amp
+                parameter, leaf._cached_regression_model_amp
             ) * np.exp(
                 1j
                 * self._prediction_real_dataset(
-                    parameter, leaf._cached_spline_model_phase
+                    parameter, leaf._cached_regression_model_phase
                 )
             )
         if not only_regressions:
