@@ -36,8 +36,11 @@ class Surrogate:
     """
 
     def __init__(
-        self, eim=None, poly_deg=3, regression_model=GaussianProcessRegressor,
-        regression_hyperparameters = None,
+        self,
+        eim=None,
+        poly_deg=3,
+        regression_model=GaussianProcessRegressor,
+        regression_hyperparameters=None,
     ) -> None:
         """Initialize the class.
 
@@ -103,7 +106,7 @@ class Surrogate:
         ]
         """
         # print(training_compressed.shape)
-        if self.regression_hyperparameters == None:
+        if self.regression_hyperparameters is None:
 
             h_in_nodes_regression = [
                 self.regression_model().fit(
@@ -117,7 +120,7 @@ class Surrogate:
                     parameters.reshape(-1, 1), training_compressed[:, i]
                 )
                 for i, _ in enumerate(leaf.basis)
-                ]
+            ]
 
         return h_in_nodes_regression
 
