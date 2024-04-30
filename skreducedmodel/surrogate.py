@@ -4,7 +4,9 @@ import gwtools
 
 import numpy as np
 
-from scipy.interpolate import splev, splrep
+# from scipy.interpolate import splev, splrep
+
+from sklearn.gaussian_process import GaussianProcessRegressor
 
 from .empiricalinterpolation import EmpiricalInterpolation, _error
 
@@ -35,7 +37,9 @@ class Surrogate:
         Instance of EmpiricalInterpolation.
     """
 
-    def __init__(self, eim=None, poly_deg=3) -> None:
+    def __init__(
+        self, eim=None, poly_deg=3, regression_model=GaussianProcessRegressor
+    ) -> None:
         """Initialize the class.
 
         This methods initialize the Surrogate class.
@@ -43,6 +47,7 @@ class Surrogate:
         self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
         self._trained = False
+        self.regression_model = regression_model
 
     def fit(self) -> None:
         """Construct the model.
@@ -63,17 +68,17 @@ class Surrogate:
                     [gwtools.phase(h) for h in leaf.training_set]
                 )  # np.angle(leaf.training_set)
 
-                leaf._cached_regression_model_amp = self._spline_model(
+                leaf._cached_regression_model_amp = self._regression_model(
                     leaf, amp_training_set, leaf.train_parameters
                 )
 
-                leaf._cached_regression_model_phase = self._spline_model(
+                leaf._cached_regression_model_phase = self._regression_model(
                     leaf, phase_training_set, leaf.train_parameters
                 )
 
             else:
                 # leaf.complex_dataset_bool = False
-                leaf._cached_regression_model = self._spline_model(
+                leaf._cached_regression_model = self._regression_model(
                     leaf, leaf.training_set, leaf.train_parameters
                 )
 
@@ -84,17 +89,28 @@ class Surrogate:
         """Return True only if the instance is trained, False otherwise."""
         return self._trained
 
-    def _spline_model(self, leaf, training_set, parameters):
+    def _regression_model(self, leaf, training_set, parameters):
         training_compressed = training_set[:, leaf.empirical_nodes]
-        h_in_nodes_splined = [
+
+        """
+        h_in_nodes_regression = [
             splrep(
                 np.sort(parameters),
                 training_compressed[:, i][np.argsort(parameters)],
                 k=self.poly_deg,
+                )
+                for i, _ in enumerate(leaf.basis)
+        ]
+        """
+        # print(training_compressed.shape)
+        h_in_nodes_regression = [
+            self.regression_model().fit(
+                parameters.reshape(-1, 1), training_compressed[:, i]
             )
             for i, _ in enumerate(leaf.basis)
         ]
-        return h_in_nodes_splined
+
+        return h_in_nodes_regression
 
     def predict(self, parameter, only_regressions=False):
         """Evaluate the surrogate model at a given parameter.
@@ -136,10 +152,24 @@ class Surrogate:
         else:
             return h_surrogate_at_nodes
 
-    def _prediction_real_dataset(self, parameter, fitted_model):
+    def _prediction_real_dataset(self, parameter, fitted_models):
+        # ver si shape de splines y gpr devueltos son los mismos.
+        # todo esta codeado para splines
+
+        """
         h_surrogate_at_nodes = np.array(
-            [splev(parameter, spline) for spline in fitted_model]
+            [splev(parameter, spline) for spline in fitted_models]
         )
+        """
+        h_surrogate_at_nodes = np.array(
+            [
+                model.predict(parameter.reshape(1, -1))
+                for model in fitted_models
+            ]
+        )
+
+        # print(h_surrogate_at_nodes.shape)
+        # print(fitted_models[0])
 
         return h_surrogate_at_nodes
 

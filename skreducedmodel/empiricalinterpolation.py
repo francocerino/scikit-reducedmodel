@@ -1,6 +1,5 @@
 """Empirical Interpolation Methods."""
 
-
 import numpy as np
 
 from skreducedmodel.reducedbasis import ReducedBasis, _error

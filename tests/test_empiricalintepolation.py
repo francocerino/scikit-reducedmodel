@@ -89,7 +89,10 @@ def test_interpolator(ts_train, parameters_train, times):
         assert leaf.is_leaf
         # test if interpolation is true
         np.testing.assert_allclose(
-            interp_fun[leaf.empirical_nodes], sample[leaf.empirical_nodes], rtol=1e-5, atol=1e-8
+            interp_fun[leaf.empirical_nodes],
+            sample[leaf.empirical_nodes],
+            rtol=1e-5,
+            atol=1e-8,
         )
 
 

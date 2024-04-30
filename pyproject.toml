@@ -26,7 +26,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 urls = {Homepage = "https://github.com/francocerino/scikit-reducedmodel"}
-dependencies = ["numpy", "scipy", "anytree", "attr", "attrs", "gwtools"]
+dependencies = ["numpy", "scipy", "anytree", "attr", "attrs", "gwtools","scikit-learn"]
 
 [tool.setuptools]
 packages = ["skreducedmodel"]###, "skreducedmodel.*"]

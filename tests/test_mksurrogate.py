@@ -3,6 +3,7 @@ import pytest
 from skreducedmodel.reducedbasis import ReducedBasis
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 from skreducedmodel.mksurrogate import mksurrogate, InputError
+import numpy as np
 
 
 def test_error_non_trained_rb_only():
@@ -86,7 +87,7 @@ def test_rb_given_all_ok(ts_train, parameters_train, times):
         physical_points=times,
     )
     surrogate = mksurrogate(rb)
-    surrogate.predict(1)
+    surrogate.predict(np.array([1]).reshape(1, 1))
 
 
 def test_eim_given_all_ok(ts_train, parameters_train, times):
@@ -98,7 +99,7 @@ def test_eim_given_all_ok(ts_train, parameters_train, times):
     )
     eim = EmpiricalInterpolation(rb)
     surrogate = mksurrogate(eim)
-    surrogate.predict(1)
+    surrogate.predict(np.array([1]).reshape(1, 1))
 
 
 def test_eim_with_no_training_data_fails():

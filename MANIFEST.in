@@ -4,6 +4,7 @@ include *txt
 include *.ipynb
 recursive-include skreducedmodel *
 include *.png
+include *.pdf
 
 recursive-include dist *.gz
 recursive-include dist *.whl
