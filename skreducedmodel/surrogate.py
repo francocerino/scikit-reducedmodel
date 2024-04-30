@@ -4,8 +4,6 @@ import gwtools
 
 import numpy as np
 
-# from scipy.interpolate import splev, splrep
-
 from sklearn.gaussian_process import GaussianProcessRegressor
 
 from .empiricalinterpolation import EmpiricalInterpolation, _error
@@ -38,7 +36,8 @@ class Surrogate:
     """
 
     def __init__(
-        self, eim=None, poly_deg=3, regression_model=GaussianProcessRegressor
+        self, eim=None, poly_deg=3, regression_model=GaussianProcessRegressor,
+        regression_hyperparameters = None,
     ) -> None:
         """Initialize the class.
 
@@ -48,6 +47,7 @@ class Surrogate:
         self.eim = EmpiricalInterpolation() if eim is None else eim
         self._trained = False
         self.regression_model = regression_model
+        self.regression_hyperparameters = regression_hyperparameters
 
     def fit(self) -> None:
         """Construct the model.
@@ -103,12 +103,21 @@ class Surrogate:
         ]
         """
         # print(training_compressed.shape)
-        h_in_nodes_regression = [
-            self.regression_model().fit(
-                parameters.reshape(-1, 1), training_compressed[:, i]
-            )
-            for i, _ in enumerate(leaf.basis)
-        ]
+        if self.regression_hyperparameters == None:
+
+            h_in_nodes_regression = [
+                self.regression_model().fit(
+                    parameters.reshape(-1, 1), training_compressed[:, i]
+                )
+                for i, _ in enumerate(leaf.basis)
+            ]
+        else:
+            h_in_nodes_regression = [
+                self.regression_model(**self.regression_hyperparameters).fit(
+                    parameters.reshape(-1, 1), training_compressed[:, i]
+                )
+                for i, _ in enumerate(leaf.basis)
+                ]
 
         return h_in_nodes_regression
 
