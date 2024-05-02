@@ -105,7 +105,7 @@ class Surrogate:
                 for i, _ in enumerate(leaf.basis)
         ]
         """
-        # print(training_compressed.shape)
+
         if self.regression_hyperparameters is None:
 
             h_in_nodes_regression = [
@@ -115,6 +115,7 @@ class Surrogate:
                 for i, _ in enumerate(leaf.basis)
             ]
         else:
+            # the same as above, but adding new hyperparameters to the model
             h_in_nodes_regression = [
                 self.regression_model(**self.regression_hyperparameters).fit(
                     parameters.reshape(-1, 1), training_compressed[:, i]
@@ -173,15 +174,13 @@ class Surrogate:
             [splev(parameter, spline) for spline in fitted_models]
         )
         """
+
         h_surrogate_at_nodes = np.array(
             [
                 model.predict(parameter.reshape(1, -1))
                 for model in fitted_models
             ]
         )
-
-        # print(h_surrogate_at_nodes.shape)
-        # print(fitted_models[0])
 
         return h_surrogate_at_nodes
 
