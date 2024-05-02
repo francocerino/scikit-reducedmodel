@@ -38,7 +38,7 @@ class Surrogate:
     def __init__(
         self,
         eim=None,
-        poly_deg=3,
+        # poly_deg=3,
         regression_model=GaussianProcessRegressor,
         regression_hyperparameters=None,
     ) -> None:
@@ -46,7 +46,7 @@ class Surrogate:
 
         This methods initialize the Surrogate class.
         """
-        self.poly_deg = poly_deg
+        # self.poly_deg = poly_deg
         self.eim = EmpiricalInterpolation() if eim is None else eim
         self._trained = False
         self.regression_model = regression_model
@@ -107,7 +107,6 @@ class Surrogate:
         """
 
         if self.regression_hyperparameters is None:
-
             h_in_nodes_regression = [
                 self.regression_model().fit(
                     parameters.reshape(-1, 1), training_compressed[:, i]
