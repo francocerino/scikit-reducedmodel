@@ -121,6 +121,10 @@ class ReducedBasis:
         self._trained = False
 
         self.complex_dataset = np.any(np.iscomplex(training_set))
+        if len(parameters.shape) == 1:
+            parameters = parameters.reshape(-1, 1)
+        assert len(parameters.shape) == 2
+        self.parameter_dimension = parameters.shape[1]
 
         # parameters = X_train[0]
         # physical_points = X_train[1]
