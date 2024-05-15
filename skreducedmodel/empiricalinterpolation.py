@@ -49,7 +49,6 @@ class EmpiricalInterpolation:
             "reduced_basis": self.reduced_basis,
         }
 
-
     def fit(self) -> None:
         """Implement EIM algorithm.
 
