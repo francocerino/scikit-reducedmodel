@@ -59,6 +59,11 @@ class Surrogate:
             "regression_hyperparameters": self.regression_hyperparameters,
         }
 
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
+
     def fit(self) -> None:
         """Construct the model.
 

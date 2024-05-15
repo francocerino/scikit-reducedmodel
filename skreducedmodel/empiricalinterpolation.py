@@ -49,6 +49,11 @@ class EmpiricalInterpolation:
             "reduced_basis": self.reduced_basis,
         }
 
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
+
     def fit(self) -> None:
         """Implement EIM algorithm.
 

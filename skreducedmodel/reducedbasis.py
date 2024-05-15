@@ -92,6 +92,11 @@ class ReducedBasis:
             "integration_rule": self.integration_rule,
         }
 
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
+
     # comenzamos la implementacion de reduced_basis
     # la idea es acoplar esto al método fit de ReducedModel.
     def fit(
