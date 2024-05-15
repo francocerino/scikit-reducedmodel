@@ -43,6 +43,13 @@ class EmpiricalInterpolation:
         )
         self._trained = False
 
+    def get_params(self, deep=True):
+
+        return {
+            "reduced_basis": self.reduced_basis,
+        }
+
+
     def fit(self) -> None:
         """Implement EIM algorithm.
 

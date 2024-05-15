@@ -52,6 +52,13 @@ class Surrogate:
         self.regression_model = regression_model
         self.regression_hyperparameters = regression_hyperparameters
 
+    def get_params(self, deep=True):
+        return {
+            "eim": self.eim,
+            "regression_model": self.regression_model,
+            "regression_hyperparameters": self.regression_hyperparameters,
+        }
+
     def fit(self) -> None:
         """Construct the model.
 
