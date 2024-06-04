@@ -43,7 +43,7 @@ class EmpiricalInterpolation:
         )
         self._trained = False
 
-    def get_params(self, deep=True):
+    def get_params(self):
 
         return {
             "reduced_basis": self.reduced_basis,
