@@ -79,9 +79,7 @@ class ReducedBasis:
 
         assert self.nmax > 0 and self.lmax >= 0
 
-    def get_params(self, deep=True):
-        # TypeError: ReducedBasis.get_params() got an unexpected
-        # keyword argument 'deep'
+    def get_params(self):
 
         return {
             "index_seed_global_rb": self.index_seed_global_rb,
