@@ -28,7 +28,7 @@ In science and engineering is known that obtaining numerical simulations by solv
 To install the latest stable version of ScikitReducedModel from PyPI:
 
 ```bash
-pip install Scikit-ReducedModel
+pip install scikit-reducedmodel
 ```
 
 To install the developer version (may be unstable):
