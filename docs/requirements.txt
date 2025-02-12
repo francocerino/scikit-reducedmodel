@@ -1,4 +1,4 @@
-Sphinx>5.0#<3.0
+Sphinx>5.0 # <3.0
 sphinx_rtd_theme
 nbsphinx
 sphinx-copybutton

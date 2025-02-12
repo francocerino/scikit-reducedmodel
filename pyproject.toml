@@ -7,8 +7,8 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Scikit-ReducedModel"
-version = "1.0"
+name = "scikit-reducedmodel"
+version = "1.1"
 authors = [{name = "Franco Cerino", email = "francocerino@gmail.com"}]
 license = {text = "The MIT License"}
 readme = "README.md"

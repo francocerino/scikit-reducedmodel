@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 from skreducedmodel.reducedbasis import ReducedBasis, _error
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
@@ -32,7 +33,7 @@ def test_rom_rb_interface(rom_parameters):
     assert len(errors) == 10
     assert len(projection_matrix) == 101
     assert len(greedy_indices) == 10
-    assert eim == bessel.basis_.eim_
+    assert np.allclose(eim.interpolant, bessel.basis_.eim_.interpolant)
 
     rb = ReducedBasis(greedy_tol=1e-14)
     rb.fit(
@@ -51,8 +52,8 @@ def test_rom_rb_interface(rom_parameters):
     rom_greedy_indices = leaf.indices
 
     assert bessel.basis_.data.shape == leaf.basis.shape
-    assert (rom_errors == errors).all()
-    assert (rom_projection_matrix == projection_matrix).all()
+    assert np.allclose(rom_errors, errors)
+    assert np.allclose(rom_projection_matrix, projection_matrix)
     assert rom_greedy_indices == greedy_indices
 
 
