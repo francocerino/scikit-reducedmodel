@@ -33,3 +33,7 @@ htmlcov/
 
 Scikit-ReducedModel*
 dist/*
+
+# macOS system files
+.DS_Store
+tests/.DS_Store
