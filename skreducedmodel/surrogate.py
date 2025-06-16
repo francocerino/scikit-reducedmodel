@@ -124,7 +124,6 @@ class Surrogate:
         """
         rb = self.eim.reduced_basis
 
-        # the same as above, but adding new hyperparameters to the model
         h_in_nodes_regression = [
             self.regression_model(**self.regression_hyperparameters).fit(
                 parameters.reshape(-1, rb.parameter_dimension),
