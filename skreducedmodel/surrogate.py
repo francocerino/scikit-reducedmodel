@@ -42,7 +42,8 @@ class Surrogate:
         eim=None,
         # poly_deg=3,
         regression_model=GaussianProcessRegressor,
-        regression_hyperparameters=None,
+        regression_hyperparameters={},
+        fit_kwargs={},
     ) -> None:
         """Initialize the class.
 
@@ -53,12 +54,14 @@ class Surrogate:
         self._trained = False
         self.regression_model = regression_model
         self.regression_hyperparameters = regression_hyperparameters
+        self.fit_kwargs = fit_kwargs
 
     def get_params(self):
         return {
             "eim": self.eim,
             "regression_model": self.regression_model,
             "regression_hyperparameters": self.regression_hyperparameters,
+            "fit_kwargs": self.fit_kwargs,
         }
 
     def set_params(self, **parameters):
@@ -120,23 +123,17 @@ class Surrogate:
         ]
         """
         rb = self.eim.reduced_basis
-        if self.regression_hyperparameters is None:
-            h_in_nodes_regression = [
-                self.regression_model().fit(
-                    parameters.reshape(-1, rb.parameter_dimension),
-                    training_compressed[:, i],
-                )
-                for i, _ in enumerate(leaf.basis)
-            ]
-        else:
-            # the same as above, but adding new hyperparameters to the model
-            h_in_nodes_regression = [
-                self.regression_model(**self.regression_hyperparameters).fit(
-                    parameters.reshape(-1, rb.parameter_dimension),
-                    training_compressed[:, i],
-                )
-                for i, _ in enumerate(leaf.basis)
-            ]
+
+        # the same as above, but adding new hyperparameters to the model
+        h_in_nodes_regression = [
+            self.regression_model(**self.regression_hyperparameters).fit(
+                parameters.reshape(-1, rb.parameter_dimension),
+                training_compressed[:, i],
+                **self.fit_kwargs,
+            )
+            for i, _ in enumerate(leaf.basis)
+        ]
+
         # """
 
         return h_in_nodes_regression
