@@ -124,6 +124,10 @@ class ReducedBasis:
         self._trained = False
 
         self.complex_dataset = np.any(np.iscomplex(training_set))
+
+        # If is given an array of shape (n,) instead of (n,1),
+        # it is brought to (n,1) shape.
+
         if len(parameters.shape) == 1:
             parameters = parameters.reshape(-1, 1)
         assert len(parameters.shape) == 2

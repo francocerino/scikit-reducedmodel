@@ -8,6 +8,8 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 
 from .empiricalinterpolation import EmpiricalInterpolation, _error
 
+# from scipy.interpolate import splrep, splev
+
 
 class Surrogate:
     """Build reduced order models.
@@ -110,9 +112,9 @@ class Surrogate:
         """
         h_in_nodes_regression = [
             splrep(
-                np.sort(parameters),
-                training_compressed[:, i][np.argsort(parameters)],
-                k=self.poly_deg,
+                parameters,
+                training_compressed[:, i],
+                k=3,
                 )
                 for i, _ in enumerate(leaf.basis)
         ]
@@ -135,6 +137,7 @@ class Surrogate:
                 )
                 for i, _ in enumerate(leaf.basis)
             ]
+        # """
 
         return h_in_nodes_regression
 
@@ -174,7 +177,10 @@ class Surrogate:
             )
         if not only_regressions:
             h_surrogate = leaf.interpolant @ h_surrogate_at_nodes
-            return h_surrogate
+            # return h_surrogate
+            return h_surrogate.reshape(
+                -1
+            )  # reshape para GRP, no para splines de splev
         else:
             return h_surrogate_at_nodes
 
@@ -195,6 +201,7 @@ class Surrogate:
                 for model in fitted_models
             ]
         )
+        # """
 
         return h_surrogate_at_nodes
 
