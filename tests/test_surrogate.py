@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 
-from skreducedmodel.reducedbasis import ReducedBasis, _error
+from skreducedmodel.reducedbasis import ReducedBasis, squared_distance
 from skreducedmodel.empiricalinterpolation import EmpiricalInterpolation
 from skreducedmodel.surrogate import Surrogate
 
@@ -170,8 +170,8 @@ def test_consistency_complex_and_real_cases(
         h_rom = surrogate.predict(q).T
         h_rom_complex = surrogate_complex.predict(q).T
 
-        errors_rom.append(_error(h, h_rom, times))
-        errors_rom_complex.append(_error(h, h_rom_complex, times))
+        errors_rom.append(squared_distance(h, h_rom, times))
+        errors_rom_complex.append(squared_distance(h, h_rom_complex, times))
 
     assert np.allclose(errors_rom_complex, errors_rom)
 

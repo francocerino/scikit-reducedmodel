@@ -502,7 +502,7 @@ class ReducedBasis:
         return np.array(idxs_subspace_0), np.array(idxs_subspace_1)
 
     def score(self, h1, h2, domain, rule="riemann"):
-        return _error(h1, h2, domain, rule)  # hacer con herencia de una clase?
+        return squared_distance(h1, h2, domain, rule)
 
 
 def _prune(greedy_errors, proj_matrix, num):
@@ -665,7 +665,7 @@ def normalize_set(array, domain, rule="riemann"):
     )
 
 
-def _error(h1, h2, domain, rule="riemann"):
+def squared_distance(h1, h2, domain, rule="riemann"):
     """Error function.
 
     The error is computed in the L2 norm (continuous case) or the 2-norm

@@ -37,3 +37,8 @@ dist/*
 # macOS system files
 .DS_Store
 tests/.DS_Store
+
+*.db
+*.log
+
+.virtual_documents/

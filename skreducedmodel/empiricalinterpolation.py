@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from skreducedmodel.reducedbasis import ReducedBasis, _error
+from .reducedbasis import ReducedBasis, squared_distance
 
 
 # =================================
@@ -148,4 +148,4 @@ class EmpiricalInterpolation:
         return h_interpolated.T
 
     def score(self, h1, h2, domain, rule="riemann"):
-        return _error(h1, h2, domain, rule)
+        return squared_distance(h1, h2, domain, rule)

@@ -6,7 +6,7 @@ import numpy as np
 
 from sklearn.gaussian_process import GaussianProcessRegressor
 
-from .empiricalinterpolation import EmpiricalInterpolation, _error
+from .empiricalinterpolation import EmpiricalInterpolation, squared_distance
 
 # from scipy.interpolate import splrep, splev
 
@@ -41,9 +41,9 @@ class Surrogate:
         self,
         eim=None,
         # poly_deg=3,
-        regression_model=GaussianProcessRegressor,
-        regression_hyperparameters={},
-        fit_kwargs={},
+        regression_model=GaussianProcessRegressor,  # regression
+        regression_hyperparameters={},  # regression_init_kwargs
+        fit_kwargs={},  # regression_fit_kwargs
     ) -> None:
         """Initialize the class.
 
@@ -123,15 +123,17 @@ class Surrogate:
         ]
         """
         rb = self.eim.reduced_basis
-
-        h_in_nodes_regression = [
-            self.regression_model(**self.regression_hyperparameters).fit(
-                parameters.reshape(-1, rb.parameter_dimension),
+        parameters_reshaped = parameters.reshape(-1, rb.parameter_dimension)
+        h_in_nodes_regression = []
+        for i, _ in enumerate(leaf.basis):
+            model = self.regression_model(**self.regression_hyperparameters)
+            # con model.fit en otra linea se puede usar FLAML:
+            model.fit(
+                parameters_reshaped,
                 training_compressed[:, i],
                 **self.fit_kwargs,
             )
-            for i, _ in enumerate(leaf.basis)
-        ]
+            h_in_nodes_regression.append(model)
 
         # """
 
@@ -189,17 +191,22 @@ class Surrogate:
             [splev(parameter, spline) for spline in fitted_models]
         )
         """
-        rb = self.eim.reduced_basis
 
-        h_surrogate_at_nodes = np.array(
-            [
-                model.predict(parameter.reshape(1, rb.parameter_dimension))
-                for model in fitted_models
-            ]
+        parameter_reshaped = parameter.reshape(
+            1, self.eim.reduced_basis.parameter_dimension
         )
-        # """
+        h_surrogate_at_nodes = np.array(
+            [model.predict(parameter_reshaped) for model in fitted_models]
+        )
 
         return h_surrogate_at_nodes
 
+        # h_surrogate_at_nodes = np.stack([
+        #    model.predict(parameter_reshaped) # .ravel()
+        #    for model in fitted_models
+        # ])
+
+        # """
+
     def score(self, h1, h2, domain, rule="riemann"):
-        return _error(h1, h2, domain, rule)
+        return squared_distance(h1, h2, domain, rule)
