@@ -30,3 +30,5 @@ recursive-exclude dist *
 recursive-exclude examples/waveforms *.npy
 recursive-exclude examples *.ipynb
 recursive-exclude Scikit_ReducedModel.egg-info *
+
+exclude requirements-dev.txt
