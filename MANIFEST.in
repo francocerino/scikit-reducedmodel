@@ -30,10 +30,3 @@ recursive-exclude dist *
 recursive-exclude examples/waveforms *.npy
 recursive-exclude examples *.ipynb
 recursive-exclude Scikit_ReducedModel.egg-info *
-
-exclude Pendulo-AGUS.ipynb
-exclude Pendulo-Copy1.ipynb
-exclude Untitled.ipynb
-exclude runs-Copy1.ipynb
-exclude runs.ipynb
-exclude test_partition_choose_child.ipynb
