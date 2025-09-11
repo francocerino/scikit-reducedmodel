@@ -19,6 +19,11 @@ Surrogate models can be built, which are comprised of three sequential steps of 
 
 This package is built with the philosophy and idea of usability of scikit-learn modules. For usage examples, see the [documentation](https://scikit-reducedmodel.readthedocs.io/en/latest/).
 
+
+Features: 
+- hp-greedy in multidimensional parameter spaces.
+- Multidimensional regression models. Any implementation compatible with the scikit-learn API can be used.
+
 # Motivation
 
 In science and engineering is known that obtaining numerical simulations by solving differential equations can be more computational demanding than desired. For example, in the field of general relativity, to obtain expressions of gravitational waves could cost months using supercomputers. Furthermore, there are studies as parameter estimation that can require up to millions of sequential estimations, dominating the computational expense of the problem. In the last years, these problems were addresed building surrogate models from high cost simulations, taking advantage of the redundancy of the solutions with respect to the parameter space, which can build solutions in real time with no loss of accuracy.
